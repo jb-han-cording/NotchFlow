@@ -1,0 +1,7 @@
+{
+  "version": "0.4.0",
+  "build": 6,
+  "dmgURL": "https://downloads.example.com/NotchFlow-0.4.0.dmg",
+  "sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+  "releaseNotes": "변경 내용을 여기에 입력하세요."
+}

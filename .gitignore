@@ -1,0 +1,10 @@
+.DS_Store
+.build/
+build/
+DerivedData/
+.swiftpm/
+xcuserdata/
+*.xcuserstate
+NotchFlow.dmg
+dist/*.dmg
+!dist/NotchFlow-0.3.2.dmg
