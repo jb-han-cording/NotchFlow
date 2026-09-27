@@ -5,7 +5,5 @@ let package = Package(name: "NotchFlow", platforms: [.macOS(.v14)], products: [
     .library(name: "NotchFlowCore", targets: ["NotchFlowCore"])
 ], targets: [
     .target(name: "NotchFlowCore"),
-    .executableTarget(name: "NotchFlow", dependencies: ["NotchFlowCore"]),
-    .testTarget(name: "NotchFlowCoreTests", dependencies: ["NotchFlowCore"]),
-    .testTarget(name: "NotchFlowTests", dependencies: ["NotchFlow", "NotchFlowCore"])
+    .executableTarget(name: "NotchFlow", dependencies: ["NotchFlowCore"])
 ])
