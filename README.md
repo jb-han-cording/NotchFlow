@@ -1,11 +1,13 @@
 <div align="center">
   <img src="Resources/Branding/AppIcon.png" width="128" alt="NotchFlow 앱 아이콘">
   <h1>NotchFlow</h1>
-  <p>MacBook의 노치를 음악, 일정, 파일, 메모와 타이머를 위한 작은 작업 공간으로 바꿔보세요.</p>
+  <p>노치를 하루의 흐름을 정리하는 가장 작은 작업 공간으로.</p>
+  <p>음악, 일정, 파일, 메모와 타이머를 MacBook의 노치에서 자연스럽게 확인하세요.</p>
   <p><strong>macOS 14 이상 · Apple silicon 및 Intel Mac 지원</strong></p>
   <p>
     <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.2.dmg"><strong>NotchFlow 0.3.2 다운로드</strong></a>
   </p>
+  <p><a href="README.en.md">English</a> · 한국어</p>
 </div>
 
 ## 노치에서 바로 하는 일
