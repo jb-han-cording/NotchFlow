@@ -31,7 +31,7 @@ struct NotchView: View {
     @ObservedObject var calendar: CalendarViewModel
     @Environment(\.colorScheme) private var systemScheme
     private var scheme: ColorScheme { settings.value.theme == "Light" ? .light : settings.value.theme == "Dark" ? .dark : systemScheme }
-    private var isExpandedOrHover: Bool { model.state == .expanded || model.state == .hover }
+    private var isExpandedOrHover: Bool { model.presentsExpandedContent }
     private var isShowingNotificationBanner: Bool {
         model.state == .notification && notifications.current != nil && !isExpandedOrHover
     }

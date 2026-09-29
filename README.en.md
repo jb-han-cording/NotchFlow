@@ -1,11 +1,11 @@
 <div align="center">
   <img src="Resources/Branding/AppIcon.png" width="128" alt="NotchFlow app icon">
   <h1>NotchFlow</h1>
-  <p>Turn the notch into the smallest workspace for your day.</p>
-  <p>Keep music, events, files, notes, and timers close at hand on your MacBook.</p>
+  <p>Turn your MacBook notch into a calm, compact productivity space.</p>
+  <p>Keep music, events, files, notes, and focus timers naturally within reach.</p>
   <p><strong>macOS 14 or later · Apple silicon and Intel Macs</strong></p>
   <p>
-    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.2.dmg"><strong>Download NotchFlow 0.3.2</strong></a>
+    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.3.dmg"><strong>Download NotchFlow 0.3.3</strong></a>
   </p>
   <p><a href="README.en.md">English</a> · <a href="README.md">한국어</a></p>
 </div>
@@ -25,7 +25,7 @@ NotchFlow also works on Macs without a physical notch and on external displays, 
 
 ## Install
 
-1. [Download the NotchFlow DMG](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.2.dmg).
+1. [Download the NotchFlow DMG](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.3.dmg).
 2. Open the DMG and drag **NotchFlow** to **Applications**.
 3. Launch NotchFlow from Applications.
 4. If macOS says it cannot verify the developer, Control-click the app, choose **Open**, and confirm.
@@ -90,4 +90,4 @@ For help or feature requests, visit [GitHub Issues](https://github.com/jb-han-co
 
 ---
 
-Current version: **0.3.2 (build 6)**
+Current version: **0.3.3 (build 7)**

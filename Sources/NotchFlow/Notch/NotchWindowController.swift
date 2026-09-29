@@ -33,7 +33,11 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
     private var ignoreOutsideClicksUntil: TimeInterval = 0
     private var suppressHoverUntilMouseExit = false
     private var lastLoggedState: NotchState?
-    private var resizeTimer: Timer?
+    private var resizeDisplayLink: CADisplayLink?
+    private var resizeStartFrame: CGRect = .zero
+    private var resizeStartedAt: CFTimeInterval = 0
+    private var resizeDuration: CFTimeInterval = 0.3
+    private lazy var resizeDriver = NotchResizeDriver(controller: self)
 
     init(app: AppState, screens: ScreenService? = nil) {
         self.app = app
@@ -92,7 +96,7 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
 
         let mouseLoc = NSEvent.mouseLocation
         let now = ProcessInfo.processInfo.systemUptime
-        guard now >= transitionEndsAt else { return }
+        guard resizeDisplayLink == nil, now >= transitionEndsAt else { return }
         guard let screen = screens.selectedScreen(id: selectedScreen) else { return }
         let geometry = screens.geometry(for: screen)
 
@@ -212,46 +216,32 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
         }
         let target = geometry.frame(width: size.width, height: size.height)
         // Unrelated updates must not restart a transition already heading here.
-        if resizeTimer != nil, isFrameApproximatelyEqual(targetFrame, target) { return }
+        if (model.state == .hover || model.state == .expanded), !model.presentsExpandedContent {
+            model.presentsExpandedContent = true
+        }
+        if resizeDisplayLink != nil, isFrameApproximatelyEqual(targetFrame, target) { return }
         targetFrame = target
-        resizeTimer?.invalidate()
-        resizeTimer = nil
+        resizeDisplayLink?.invalidate()
+        resizeDisplayLink = nil
 
         let speed = settings.value.animationSpeed
         let reduceMotion = NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
 
         if !isFrameApproximatelyEqual(panel.frame, target) {
             if animated && !reduceMotion && panel.isVisible {
-                transitionEndsAt = ProcessInfo.processInfo.systemUptime + speed
-                let start = panel.frame
-                let began = ProcessInfo.processInfo.systemUptime
-                let timer = Timer(timeInterval: 1.0 / 60.0, repeats: true) { [weak self] timer in
-                    MainActor.assumeIsolated {
-                        guard let self else { timer.invalidate(); return }
-                        let fraction = min(1, (ProcessInfo.processInfo.systemUptime - began) / max(0.1, speed))
-                        let eased = fraction * fraction * (3 - 2 * fraction)
-                        let width = start.width + (target.width - start.width) * eased
-                        let height = start.height + (target.height - start.height) * eased
-                        let center = target.midX
-                        // AppKit coordinates start at the bottom. Preserve maxY,
-                        // not origin.y, to grow down from the physical notch.
-                        let top = target.maxY
-                        self.applyFrame(CGRect(x: center - width / 2, y: top - height, width: width, height: height))
-                        if fraction >= 1 {
-                            timer.invalidate()
-                            self.resizeTimer = nil
-                            self.transitionEndsAt = 0
-                        }
-                    }
-                }
-                resizeTimer = timer
-                RunLoop.main.add(timer, forMode: .common)
+                resizeDuration = max(0.1, speed)
+                transitionEndsAt = ProcessInfo.processInfo.systemUptime + resizeDuration
+                resizeStartFrame = panel.frame
+                resizeStartedAt = CACurrentMediaTime()
+                let link = panel.contentView!.displayLink(target: resizeDriver, selector: #selector(NotchResizeDriver.tick(_:)))
+                resizeDisplayLink = link
+                link.add(to: .main, forMode: .common)
             } else {
-                transitionEndsAt = 0
                 applyFrame(target)
+                finishResize()
             }
         } else {
-            transitionEndsAt = 0
+            finishResize()
         }
 
         if lastLoggedState != model.state {
@@ -261,15 +251,42 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
         if showIfNeeded, !panel.isVisible { panel.orderFrontRegardless() }
     }
 
+    fileprivate func advanceResize(_ link: CADisplayLink) {
+        let fraction = min(1, max(0, (link.targetTimestamp - resizeStartedAt) / resizeDuration))
+        let eased = fraction * fraction * (3 - 2 * fraction)
+        let width = resizeStartFrame.width + (targetFrame.width - resizeStartFrame.width) * eased
+        let height = resizeStartFrame.height + (targetFrame.height - resizeStartFrame.height) * eased
+        // Round symmetric edges to physical pixels to avoid alternating
+        // subpixel rasterization while keeping the top anchored at the notch.
+        let scale = panel.backingScaleFactor
+        let halfWidth = (width * scale / 2).rounded() / scale
+        let pixelHeight = (height * scale).rounded() / scale
+        let frame = CGRect(x: targetFrame.midX - halfWidth, y: targetFrame.maxY - pixelHeight,
+                           width: halfWidth * 2, height: pixelHeight)
+        if fraction >= 1 {
+            applyFrame(targetFrame)
+            finishResize()
+        } else if !isFrameApproximatelyEqual(panel.frame, frame) {
+            applyFrame(frame)
+        }
+    }
+
+    private func finishResize() {
+        resizeDisplayLink?.invalidate()
+        resizeDisplayLink = nil
+        transitionEndsAt = 0
+        let expanded = model.state == .hover || model.state == .expanded
+        if model.presentsExpandedContent != expanded { model.presentsExpandedContent = expanded }
+    }
+
     private func applyFrame(_ frame: CGRect) {
         // Commit window geometry and SwiftUI layout together, without a second
         // implicit layer animation that can displace the header/equalizer.
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         panel.setFrame(frame, display: false, animate: false)
-        panel.contentView?.setFrameSize(frame.size)
-        panel.contentView?.layoutSubtreeIfNeeded()
-        panel.displayIfNeeded()
+        // The hosting view autoresizes with the window. Let AppKit coalesce
+        // layout and drawing for this display refresh instead of forcing both.
         CATransaction.commit()
     }
 
@@ -306,5 +323,16 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
                 return
             }
         }
+    }
+}
+
+@MainActor private final class NotchResizeDriver: NSObject {
+    weak var controller: NotchWindowController?
+
+    init(controller: NotchWindowController) { self.controller = controller }
+
+    @objc func tick(_ link: CADisplayLink) {
+        guard let controller else { link.invalidate(); return }
+        controller.advanceResize(link)
     }
 }

@@ -1,7 +1,7 @@
 {
-  "version": "0.3.2",
-  "build": 6,
-  "dmgURL": "https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.2.dmg",
-  "sha256": "028ae8b6959a56b0e1a2cb03f0acb6bd7e231ffb1cf342a26054b2bede548223",
-  "releaseNotes": "음악·캘린더 연결 설정 통합, 곡 변경 시 음악 화면 펼침 토글, 첫 실행 권한 안내를 추가했습니다."
+  "version": "0.3.3",
+  "build": 7,
+  "dmgURL": "https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.3.dmg",
+  "sha256": "55a9c36c9b246a838cfed1e51358896f547ee4a29b0a1c13f87ecb8a436f1a97",
+  "releaseNotes": "호버 확장·축소 애니메이션을 화면 주사율에 맞춰 개선했습니다. 전환 중 중복 그리기와 호버 재감지를 줄이고, 축소가 끝날 때까지 콘텐츠를 유지해 깜박임을 완화했습니다. 기존 설정과 메모는 유지됩니다."
 }

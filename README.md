@@ -1,11 +1,11 @@
 <div align="center">
   <img src="Resources/Branding/AppIcon.png" width="128" alt="NotchFlow 앱 아이콘">
   <h1>NotchFlow</h1>
-  <p>노치를 하루의 흐름을 정리하는 가장 작은 작업 공간으로.</p>
-  <p>음악, 일정, 파일, 메모와 타이머를 MacBook의 노치에서 자연스럽게 확인하세요.</p>
+  <p>MacBook 노치를 나만의 작은 생산성 공간으로.</p>
+  <p>음악, 일정, 파일, 메모와 집중 타이머를 노치에서 자연스럽게 확인하세요.</p>
   <p><strong>macOS 14 이상 · Apple silicon 및 Intel Mac 지원</strong></p>
   <p>
-    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.2.dmg"><strong>NotchFlow 0.3.2 다운로드</strong></a>
+    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.3.dmg"><strong>NotchFlow 0.3.3 다운로드</strong></a>
   </p>
   <p><a href="README.en.md">English</a> · 한국어</p>
 </div>
@@ -25,7 +25,7 @@ NotchFlow는 평소에는 노치 크기로 조용히 머물다가 마우스를 �
 
 ## 설치 방법
 
-1. [NotchFlow-0.3.2.dmg를 다운로드](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.2.dmg)합니다.
+1. [NotchFlow-0.3.3.dmg를 다운로드](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.3.dmg)합니다.
 2. 다운로드한 DMG를 열고 **NotchFlow**를 **Applications** 폴더로 옮깁니다.
 3. 응용 프로그램 폴더에서 NotchFlow를 실행합니다.
 4. macOS가 개발자를 확인할 수 없다는 메시지를 표시하면 앱을 Control-클릭한 뒤 **열기**를 선택합니다.
@@ -102,4 +102,4 @@ NotchFlow는 메모, 일정과 파일 목록을 외부로 전송하지 않으며
 
 ---
 
-현재 버전: **0.3.2 (build 6)**
+현재 버전: **0.3.3 (build 7)**

@@ -7,6 +7,8 @@ import NotchFlowCore
     @Published private(set) var musicPlaying = false
     @Published private(set) var musicIslandVisible = false
     @Published private(set) var state: NotchState = .collapsed
+    // Keep expanded content mounted until the window finishes closing.
+    @Published var presentsExpandedContent = false
     @Published var geometry = NotchGeometry(screen: CGRect(x: 0, y: 0, width: 1440, height: 900), topInset: 0, leftArea: nil, rightArea: nil)
     private var machine = NotchStateMachine()
     private var hoverTask: Task<Void, Never>?
