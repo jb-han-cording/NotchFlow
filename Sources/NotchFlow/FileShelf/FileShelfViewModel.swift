@@ -12,6 +12,37 @@ import NotchFlowCore
     private let service: FileShelfProviding
     private let store: LocalStore<[ShelfItem]>
     private var scoped: [URL] = []
+    private var cleanupTimer: Timer?
+    private var retentionHours = 0
+    func configureCleanup(hours: Int) {
+        retentionHours = hours
+        cleanExpired()
+    }
+    private func cleanExpired() {
+        cleanupTimer?.invalidate()
+        cleanupTimer = nil
+        guard writable, retentionHours > 0 else { return }
+        let cutoff = Date().addingTimeInterval(-Double(retentionHours) * 3600)
+        let expired = items.filter { $0.addedAt <= cutoff }
+        if !expired.isEmpty {
+            items.removeAll { $0.addedAt <= cutoff }
+            refresh()
+            return
+        }
+        scheduleCleanup()
+    }
+    private func scheduleCleanup() {
+        cleanupTimer?.invalidate()
+        cleanupTimer = nil
+        guard writable, retentionHours > 0, let oldest = items.map(\.addedAt).min() else { return }
+        let delay = max(1, oldest.addingTimeInterval(Double(retentionHours) * 3600).timeIntervalSinceNow)
+        let timer = Timer(timeInterval: delay, repeats: false) { [weak self] _ in
+            MainActor.assumeIsolated { self?.cleanExpired() }
+        }
+        timer.tolerance = min(30, delay * 0.1)
+        RunLoop.main.add(timer, forMode: .common)
+        cleanupTimer = timer
+    }
     init(service: FileShelfProviding = FileShelfService(), url: URL = StorageLocation.file("shelf-v1.json")) {
         self.service = service; store = LocalStore(url: url)
         do { items = try store.load(default: []); refresh() }
@@ -29,6 +60,7 @@ import NotchFlowCore
             } catch { AppLog.storage.error("Bookmark resolution failed") }
         }
         persist()
+        scheduleCleanup()
     }
     func add(_ incoming: [URL]) {
         guard writable else { return }
@@ -52,5 +84,5 @@ import NotchFlowCore
         guard writable else { return }
         do { try store.save(items) } catch { self.error = "파일 선반을 저장하지 못했습니다."; AppLog.storage.error("Shelf save failed") }
     }
-    func stop() { scoped.forEach { $0.stopAccessingSecurityScopedResource() }; scoped.removeAll() }
+    func stop() { cleanupTimer?.invalidate(); cleanupTimer = nil; scoped.forEach { $0.stopAccessingSecurityScopedResource() }; scoped.removeAll() }
 }

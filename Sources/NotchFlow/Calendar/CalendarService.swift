@@ -14,7 +14,7 @@ import NotchFlowCore
     func events(from: Date, to: Date) -> [CalendarEvent] {
         guard authorization == .fullAccess else { return [] }
         return store.events(matching: store.predicateForEvents(withStart: from, end: to, calendars: nil)).map {
-            CalendarEvent(id: ($0.eventIdentifier ?? "event") + String($0.startDate.timeIntervalSince1970), title: $0.title ?? "제목 없는 일정", start: $0.startDate, end: $0.endDate, isAllDay: $0.isAllDay)
+            CalendarEvent(id: ($0.eventIdentifier ?? "event") + String($0.startDate.timeIntervalSince1970), title: $0.title ?? "제목 없는 일정", start: $0.startDate, end: $0.endDate, isAllDay: $0.isAllDay, meetingURL: CalendarEvent.meetingLink(in: [$0.url?.absoluteString, $0.location, $0.notes].compactMap { $0 }.joined(separator: "\n")))
         }
     }
 }

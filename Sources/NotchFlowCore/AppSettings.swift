@@ -1,6 +1,9 @@
 import Foundation
 
 public struct AppSettings: Codable, Equatable {
+    public var autoHideApps: [String] = []
+    public var batteryNotifications: Bool = true
+    public var shelfRetentionHours: Int = 0
     public var openOnHover = true
     public var openOnClick = true
     public var hoverDelay = 0.25
@@ -31,6 +34,7 @@ public struct AppSettings: Codable, Equatable {
     public init() {}
 
     private enum CodingKeys: String, CodingKey {
+        case autoHideApps, batteryNotifications, shelfRetentionHours
         case openOnHover, openOnClick, hoverDelay, animationSpeed, showMenuBarIcon, hasCompletedOnboarding, automaticUpdateChecks
         case musicEnabled, calendarEnabled, shelfEnabled, memoEnabled
         case theme, expandedWidth, cornerRadius, opacity, blur
@@ -42,6 +46,9 @@ public struct AppSettings: Codable, Equatable {
     public init(from decoder: Decoder) throws {
         let defaults = AppSettings()
         let values = try decoder.container(keyedBy: CodingKeys.self)
+        autoHideApps = try values.decodeIfPresent([String].self, forKey: .autoHideApps) ?? defaults.autoHideApps
+        batteryNotifications = try values.decodeIfPresent(Bool.self, forKey: .batteryNotifications) ?? defaults.batteryNotifications
+        shelfRetentionHours = try values.decodeIfPresent(Int.self, forKey: .shelfRetentionHours) ?? defaults.shelfRetentionHours
         openOnHover = try values.decodeIfPresent(Bool.self, forKey: .openOnHover) ?? defaults.openOnHover
         openOnClick = try values.decodeIfPresent(Bool.self, forKey: .openOnClick) ?? defaults.openOnClick
         hoverDelay = try values.decodeIfPresent(Double.self, forKey: .hoverDelay) ?? defaults.hoverDelay
@@ -72,6 +79,9 @@ public struct AppSettings: Codable, Equatable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(autoHideApps, forKey: .autoHideApps)
+        try container.encode(batteryNotifications, forKey: .batteryNotifications)
+        try container.encode(shelfRetentionHours, forKey: .shelfRetentionHours)
         try container.encode(openOnHover, forKey: .openOnHover)
         try container.encode(openOnClick, forKey: .openOnClick)
         try container.encode(hoverDelay, forKey: .hoverDelay)
@@ -101,6 +111,7 @@ public struct AppSettings: Codable, Equatable {
     }
 
     public mutating func normalize() {
+        if ![0, 1, 24, 168].contains(shelfRetentionHours) { shelfRetentionHours = 0 }
         hoverDelay = min(1.5, max(0.05, hoverDelay))
         animationSpeed = min(0.8, max(0.1, animationSpeed))
         expandedWidth = min(900, max(380, expandedWidth))

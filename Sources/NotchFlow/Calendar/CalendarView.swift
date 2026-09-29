@@ -22,6 +22,13 @@ struct CalendarView: View {
                             else { Text(next.start, style: .relative); Text("후") }
                         }.font(.caption).foregroundStyle(.notchBlue)
                     }
+                    if let meeting = model.events.first(where: { $0.end > Date() && $0.meetingURL != nil }), let url = meeting.meetingURL {
+                        HStack {
+                            Label(meeting.title, systemImage: "video").lineLimit(1)
+                            Spacer()
+                            Link("회의 참가", destination: url).help(url.host ?? "회의 열기")
+                        }
+                    }
                     if model.events.isEmpty {
                         Text("오늘 예정된 일정이 없습니다.").font(.subheadline).foregroundStyle(.secondary).padding(.vertical, 4)
                     } else {

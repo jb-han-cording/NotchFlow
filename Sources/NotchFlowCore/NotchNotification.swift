@@ -1,6 +1,6 @@
 import Foundation
 public struct NotchNotification: Identifiable, Equatable {
-    public enum Kind: String { case music, calendar, files, memo, timer }
+    public enum Kind: String { case music, calendar, files, memo, timer, battery }
     public let id: UUID
     public let kind: Kind
     public let title: String

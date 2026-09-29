@@ -194,6 +194,30 @@ struct SettingsView: View {
             }
             Button("첫 실행 안내 다시 보기") { showOnboarding?() }
         }
+        Section("앱별 자동 숨김") {
+            Text("선택한 앱이 활성화되면 노치 패널을 숨깁니다. 다른 앱으로 전환하면 다시 나타납니다.").font(.caption)
+            ForEach(model.value.autoHideApps, id: \.self) { id in
+                HStack {
+                    Text(NSWorkspace.shared.urlForApplication(withBundleIdentifier: id)?.deletingPathExtension().lastPathComponent ?? id)
+                    Spacer()
+                    Button("제거") { model.value.autoHideApps.removeAll { $0 == id } }
+                }
+            }
+            Button("앱 추가…") {
+                let picker = NSOpenPanel()
+                picker.allowedContentTypes = [.application]
+                picker.allowsMultipleSelection = true
+                picker.canChooseDirectories = false
+                picker.directoryURL = URL(fileURLWithPath: "/Applications")
+                if picker.runModal() == .OK {
+                    for url in picker.urls {
+                        if let id = Bundle(url: url)?.bundleIdentifier,
+                           id != Bundle.main.bundleIdentifier,
+                           !model.value.autoHideApps.contains(id) { model.value.autoHideApps.append(id) }
+                    }
+                }
+            }
+        }
     }
 
     @ViewBuilder
@@ -236,6 +260,15 @@ struct SettingsView: View {
             Toggle("Calendar", isOn: $model.value.calendarEnabled)
             Toggle("File Shelf", isOn: $model.value.shelfEnabled)
             Toggle("Memo", isOn: $model.value.memoEnabled)
+        }
+        Section("파일 선반 자동 정리") {
+            Picker("보관 기간", selection: $model.value.shelfRetentionHours) {
+                Text("자동 정리 안 함").tag(0)
+                Text("1시간").tag(1)
+                Text("하루").tag(24)
+                Text("일주일").tag(168)
+            }
+            Text("추가한 시점부터 계산합니다. 기간을 넘긴 항목은 즉시 선반에서 제거되며 원본 파일은 유지됩니다.").font(.caption)
         }
     }
 
@@ -315,6 +348,8 @@ struct SettingsView: View {
     @ViewBuilder
     private var notificationsSection: some View {
         Section("앱 내부 알림 (Notifications)") {
+            Toggle("배터리·충전 알림", isOn: $model.value.batteryNotifications)
+            Text("전원 연결·분리, 배터리 20%·10% 이하 및 충전 완료를 알려줍니다.").font(.caption)
             Toggle("곡이 바뀌면 음악 화면 펼치기", isOn: $model.value.expandOnTrackChange)
             Text("끄면 곡 변경 시 화면이 자동으로 확장되지 않습니다. 재생 중 다이나믹 아일랜드 표시는 계속 작동합니다.")
                 .font(.caption)

@@ -34,6 +34,7 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
     private var suppressHoverUntilMouseExit = false
     private var lastLoggedState: NotchState?
     private var resizeDisplayLink: CADisplayLink?
+    private var hiddenForApp = false
     private var resizeStartFrame: CGRect = .zero
     private var resizeStartedAt: CFTimeInterval = 0
     private var resizeDuration: CFTimeInterval = 0.3
@@ -54,6 +55,10 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
         setupHosting()
         bind()
         setupMonitors()
+        NSWorkspace.shared.notificationCenter.publisher(for: NSWorkspace.didActivateApplicationNotification)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in self?.layout() }
+            .store(in: &cancellables)
         setupHoverTimer()
         layout()
     }
@@ -181,7 +186,7 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
                 self?.selectedScreen = value.screenID
                 self?.expandedWidth = value.expandedWidth
                 self?.setupHoverTimer()
-                self?.layout()
+                DispatchQueue.main.async { self?.layout() }
             }.store(in: &cancellables)
         app.$selectedModule.sink { [weak self] mod in
             self?.module = mod
@@ -197,6 +202,21 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
     }
 
     func layout(showIfNeeded: Bool = true, animated: Bool = false) {
+        let activeID = NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? ""
+        if settings.value.autoHideApps.contains(activeID) {
+            hiddenForApp = true
+            resizeDisplayLink?.invalidate()
+            resizeDisplayLink = nil
+            hoverStartedAt = nil
+            exitStartedAt = nil
+            panel.orderOut(nil)
+            return
+        }
+        if hiddenForApp {
+            hiddenForApp = false
+            model.send(.close)
+            model.presentsExpandedContent = false
+        }
         guard let screen = screens.selectedScreen(id: selectedScreen) else { panel.orderOut(nil); return }
         let geometry = screens.geometry(for: screen)
         if model.geometry != geometry { model.geometry = geometry; AppLog.app.info("Screen Detected; Notch Detected: \(geometry.hasNotch)") }
