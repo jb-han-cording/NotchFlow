@@ -103,7 +103,9 @@ struct NotchView: View {
             .frame(maxWidth: .infinity)
             .frame(height: max(model.geometry.cutout.height, 24))
             .background(
-                isExpandedOrHover
+                // On displays without a camera cutout, reveal the existing
+                // glass material instead of covering it with opaque black.
+                (isExpandedOrHover || (!model.geometry.hasNotch && settings.value.liquidGlass))
                     ? Color.clear
                     : Color.black
             )
