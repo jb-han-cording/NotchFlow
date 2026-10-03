@@ -9,3 +9,4 @@ NotchFlow.dmg
 dist/*.dmg
 !dist/NotchFlow-0.3.2.dmg
 !dist/NotchFlow-0.3.3.dmg
+!dist/NotchFlow-0.3.4.dmg

@@ -5,7 +5,7 @@
   <p>Keep music, events, files, notes, and focus timers naturally within reach.</p>
   <p><strong>macOS 14 or later · Apple silicon and Intel Macs</strong></p>
   <p>
-    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.3.dmg"><strong>Download NotchFlow 0.3.3</strong></a>
+    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.4.dmg"><strong>Download NotchFlow 0.3.4</strong></a>
   </p>
   <p><a href="README.en.md">English</a> · <a href="README.md">한국어</a></p>
 </div>
@@ -25,7 +25,17 @@ NotchFlow also works on Macs without a physical notch and on external displays, 
 
 ## Install
 
-1. [Download the NotchFlow DMG](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.3.dmg).
+### New in 0.3.4
+
+- **App-specific auto-hide** — Add apps in Settings → General to hide the panel while those apps are active. It returns when you switch to another app.
+- **Battery and power alerts** — Receive notices for power connection and disconnection, battery levels at 20% and 10% or below, and a full charge. Manage these in Settings → Notifications.
+- **Join your next meeting** — Calendar finds Zoom, Google Meet, and Teams links in event URLs, locations, or notes and shows a join button for the next meeting.
+- **Automatic shelf cleanup** — Choose one hour, one day, or one week in Settings → Modules. Disabled by default. Expiry is measured from when an item was added; only shelf references are removed, never original files.
+- **Idle glass effect** — On displays without a notch, the collapsed panel now shows the glass effect when Liquid Glass is enabled.
+
+### Download and launch
+
+1. [Download the NotchFlow DMG](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.4.dmg).
 2. Open the DMG and drag **NotchFlow** to **Applications**.
 3. Launch NotchFlow from Applications.
 4. If macOS says it cannot verify the developer, Control-click the app, choose **Open**, and confirm.
@@ -90,4 +100,4 @@ For help or feature requests, visit [GitHub Issues](https://github.com/jb-han-co
 
 ---
 
-Current version: **0.3.3 (build 7)**
+Current version: **0.3.4 (build 8)**
