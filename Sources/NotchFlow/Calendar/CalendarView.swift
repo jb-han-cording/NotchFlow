@@ -7,14 +7,16 @@ struct CalendarView: View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 10) {
                 HStack(alignment: .center) {
-                    Text(Date(), format: .dateTime.month(.wide).day())
+                    Text(model.selectedDate, format: .dateTime.month(.wide).day())
                         .font(.system(size: 16, weight: .bold))
                     Spacer()
                     Button("캘린더 열기") { model.openCalendar() }
                         .font(.system(size: 12, weight: .medium))
                 }
                 if model.authorized {
-                    if let next = model.next {
+                    DatePicker("날짜 선택", selection: $model.selectedDate, displayedComponents: .date)
+                        .datePickerStyle(.compact)
+                    if Calendar.current.isDateInToday(model.selectedDate), let next = model.next {
                         HStack {
                             Label("다음 일정", systemImage: "clock")
                             Spacer()
@@ -22,17 +24,17 @@ struct CalendarView: View {
                             else { Text(next.start, style: .relative); Text("후") }
                         }.font(.caption).foregroundStyle(.notchBlue)
                     }
-                    if let meeting = model.events.first(where: { $0.end > Date() && $0.meetingURL != nil }), let url = meeting.meetingURL {
+                    if let meeting = model.selectedEvents.first(where: { $0.end > Date() && $0.meetingURL != nil }), let url = meeting.meetingURL {
                         HStack {
                             Label(meeting.title, systemImage: "video").lineLimit(1)
                             Spacer()
                             Link("회의 참가", destination: url).help(url.host ?? "회의 열기")
                         }
                     }
-                    if model.events.isEmpty {
-                        Text("오늘 예정된 일정이 없습니다.").font(.subheadline).foregroundStyle(.secondary).padding(.vertical, 4)
+                    if model.selectedEvents.isEmpty {
+                        Text("선택한 날짜에 예정된 일정이 없습니다.").font(.subheadline).foregroundStyle(.secondary).padding(.vertical, 4)
                     } else {
-                        ForEach(model.events) { event in
+                        ForEach(model.selectedEvents) { event in
                             HStack(alignment: .top, spacing: 12) {
                                 RoundedRectangle(cornerRadius: 2).fill(.notchBlue).frame(width: 3)
                                 VStack(alignment: .leading, spacing: 3) {

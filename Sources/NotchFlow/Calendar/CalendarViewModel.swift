@@ -6,16 +6,25 @@ import NotchFlowCore
 #endif
 @MainActor final class CalendarViewModel: ObservableObject {
     @Published private(set) var events: [CalendarEvent] = []
+    @Published private(set) var selectedEvents: [CalendarEvent] = []
     @Published private(set) var authorized = false
     @Published private(set) var status = "캘린더를 연결하면 오늘의 일정을 볼 수 있습니다."
     @Published private(set) var requesting = false
     @Published private(set) var authorization: EKAuthorizationStatus = .notDetermined
+    @Published var selectedDate = Date() {
+        didSet {
+            guard !Calendar.current.isDate(oldValue, inSameDayAs: selectedDate) else { return }
+            followsToday = Calendar.current.isDateInToday(selectedDate)
+            refresh()
+        }
+    }
     var onReminder: ((CalendarEvent) -> Void)?
     var enabled = true { didSet { enabled ? refresh() : stopTimers() } }
     private let service: CalendarProviding
     private var observers: [NSObjectProtocol] = []
     private var reminderTimer: Timer?
     private var midnightTimer: Timer?
+    private var followsToday = true
     private var delivered: Set<String> = []
     private var requestHint: Task<Void, Never>?
     init(service: CalendarProviding? = nil) {
@@ -54,10 +63,14 @@ import NotchFlowCore
     }
     func refresh() {
         guard enabled, !requesting else { return }
+        if followsToday && !Calendar.current.isDateInToday(selectedDate) {
+            selectedDate = Date()
+            return
+        }
         authorization = service.authorization
         authorized = authorization == .fullAccess
         guard authorized else {
-            events = []; stopTimers()
+            events = []; selectedEvents = []; stopTimers()
             switch authorization {
             case .notDetermined: status = "캘린더를 연결하면 오늘의 일정을 볼 수 있습니다."
             case .restricted: status = "이 Mac의 관리 정책으로 캘린더 접근이 제한되어 있습니다. 기기 관리자에게 문의하세요."
@@ -66,13 +79,27 @@ import NotchFlowCore
             }
             return
         }
-        let now = Date(), start = Calendar.current.startOfDay(for: Date())
-        let end = Calendar.current.date(byAdding: .day, value: 1, to: start)!
-        events = service.events(from: start, to: end).sorted { $0.start < $1.start }
-        status = events.isEmpty ? "오늘은 예정된 일정이 없습니다." : "오늘 \(events.count)개의 일정"
+        let now = Date(), todayStart = Calendar.current.startOfDay(for: now)
+        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: todayStart)!
+        events = service.events(from: todayStart, to: tomorrow).sorted { $0.start < $1.start }
+        if Calendar.current.isDateInToday(selectedDate) {
+            selectedEvents = events
+        } else {
+            let selectedStart = Calendar.current.startOfDay(for: selectedDate)
+            let selectedEnd = Calendar.current.date(byAdding: .day, value: 1, to: selectedStart)!
+            selectedEvents = service.events(from: selectedStart, to: selectedEnd).sorted { $0.start < $1.start }
+        }
+        let dayLabel = Calendar.current.isDateInToday(selectedDate) ? "오늘" : selectedDate.formatted(.dateTime.month().day())
+        status = selectedEvents.isEmpty ? "\(dayLabel)은 예정된 일정이 없습니다." : "\(dayLabel) \(selectedEvents.count)개의 일정"
         scheduleReminder(now: now)
         midnightTimer?.invalidate()
-        midnightTimer = Timer(fire: end, interval: 0, repeats: false) { [weak self] _ in Task { @MainActor in self?.delivered.removeAll(); self?.refresh() } }
+        midnightTimer = Timer(fire: tomorrow, interval: 0, repeats: false) { [weak self] _ in
+            Task { @MainActor in
+                guard let self else { return }
+                self.delivered.removeAll()
+                self.refresh()
+            }
+        }
         if let midnightTimer { RunLoop.main.add(midnightTimer, forMode: .common) }
     }
     var next: CalendarEvent? { CalendarEvent.upcoming(events.filter { !$0.isAllDay }, at: Date()).first }

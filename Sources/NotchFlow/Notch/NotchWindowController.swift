@@ -223,6 +223,7 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
         guard let screen = screens.selectedScreen(id: selectedScreen) else { panel.orderOut(nil); return }
         let geometry = screens.geometry(for: screen)
         if model.geometry != geometry { model.geometry = geometry; AppLog.app.info("Screen Detected; Notch Detected: \(geometry.hasNotch)") }
+        let availableHeight = max(screen.visibleFrame.height, screen.frame.height - 12, 160)
         let size: CGSize
         switch model.state {
         case .collapsed:
@@ -230,16 +231,15 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
         case .hover, .expanded:
             let contentHeight: CGFloat = 190
             let headerHeight = max(geometry.cutout.height, 24)
-            let availableHeight = max(screen.visibleFrame.height, screen.frame.height - 12, 160)
             size = CGSize(width: expandedWidth, height: min(headerHeight + contentHeight, availableHeight))
         case .notification:
             size = CGSize(width: max(400, geometry.cutout.width + 140), height: geometry.cutout.height + 68)
         case .dragActive:
-            size = CGSize(width: expandedWidth, height: geometry.cutout.height + 150)
+            size = CGSize(width: expandedWidth, height: min(max(geometry.cutout.height, 24) + 190, availableHeight))
         }
         let target = geometry.frame(width: size.width, height: size.height)
         // Unrelated updates must not restart a transition already heading here.
-        if (model.state == .hover || model.state == .expanded), !model.presentsExpandedContent {
+        if (model.state == .hover || model.state == .expanded || model.state == .dragActive), !model.presentsExpandedContent {
             model.presentsExpandedContent = true
         }
         if resizeDisplayLink != nil, isFrameApproximatelyEqual(targetFrame, target) { return }
@@ -298,7 +298,7 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
         resizeDisplayLink?.invalidate()
         resizeDisplayLink = nil
         transitionEndsAt = 0
-        let expanded = model.state == .hover || model.state == .expanded
+        let expanded = model.state == .hover || model.state == .expanded || model.state == .dragActive
         if model.presentsExpandedContent != expanded { model.presentsExpandedContent = expanded }
     }
 

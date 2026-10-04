@@ -1,7 +1,7 @@
 {
-  "version": "0.3.4",
-  "build": 17,
-  "dmgURL": "https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.4.dmg",
-  "sha256": "338d1288964e8fb7b156109a88566c48c196bb12a4bfdfbd5f6c162bf0ffdecd",
-  "releaseNotes": "음악 재생 중 노치에 마우스를 올리면 음악 탭으로 바로 전환되어 펼쳐집니다. 기존 설정과 메모는 유지됩니다."
+  "version": "0.3.5",
+  "build": 18,
+  "dmgURL": "https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.5.dmg",
+  "sha256": "09c3b972097f4e578ba42cfd33ef6bb91ebefe5d32134849b2478e386d821984",
+  "releaseNotes": "캘린더에서 날짜를 선택해 일정을 확인하고, 파일을 노치로 끌어 AirDrop 보내기 또는 파일 선반 보관을 선택할 수 있습니다. 기존 설정과 메모는 유지됩니다."
 }

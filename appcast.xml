@@ -8,20 +8,20 @@
     <description>NotchFlow release updates</description>
     <language>ko</language>
     <item>
-      <title>NotchFlow 0.3.4 (build 17)</title>
-      <sparkle:version>17</sparkle:version>
-      <sparkle:shortVersionString>0.3.4</sparkle:shortVersionString>
+      <title>NotchFlow 0.3.5 (build 18)</title>
+      <sparkle:version>18</sparkle:version>
+      <sparkle:shortVersionString>0.3.5</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
       <description><![CDATA[
         <h2>이번 업데이트</h2>
         <ul>
-          <li>음악 재생 중 노치에 마우스를 올리면 음악 탭으로 바로 전환됩니다.</li>
-          <li>Sparkle 업데이트 프레임워크를 포함합니다.</li>
+          <li>캘린더에서 날짜를 선택해 해당 날짜의 일정을 확인할 수 있습니다.</li>
+          <li>파일을 노치로 드래그하면 AirDrop 보내기와 파일 선반 보관 중 선택할 수 있습니다.</li>
         </ul>
       ]]></description>
-      <pubDate>Sun, 04 Oct 2026 12:00:00 +0000</pubDate>
+      <pubDate>Sun, 04 Oct 2026 12:55:00 +0000</pubDate>
       <enclosure
-        url="https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.4.dmg"
+        url="https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.5.dmg"
         type="application/octet-stream" />
     </item>
   </channel>

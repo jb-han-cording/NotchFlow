@@ -5,7 +5,7 @@
   <p>음악, 일정, 파일, 메모와 집중 타이머를 노치에서 자연스럽게 확인하세요.</p>
   <p><strong>macOS 14 이상 · Apple silicon 및 Intel Mac 지원</strong></p>
   <p>
-    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.4.dmg"><strong>NotchFlow 0.3.4 다운로드</strong></a>
+    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.5.dmg"><strong>NotchFlow 0.3.5 다운로드</strong></a>
   </p>
   <p><a href="README.en.md">English</a> · 한국어</p>
 </div>
@@ -25,18 +25,14 @@ NotchFlow는 평소에는 노치 크기로 조용히 머물다가 마우스를 �
 
 ## 설치 방법
 
-### 0.3.4에서 새로워진 기능
+### 0.3.5에서 새로워진 기능
 
-- **앱별 자동 숨김** — 설정 → 일반에서 앱을 추가하면 해당 앱이 활성화된 동안 패널을 숨기고, 다른 앱으로 전환하면 다시 표시합니다.
-- **배터리·충전 알림** — 전원 연결·분리, 배터리 20%·10% 이하, 충전 완료를 알려줍니다. 설정 → 알림에서 켜고 끌 수 있습니다.
-- **다음 회의 참가** — 캘린더 일정의 링크·장소·메모에서 Zoom, Google Meet, Teams 주소를 찾아 다음 회의의 참가 버튼을 표시합니다.
-- **파일 선반 자동 정리** — 설정 → 모듈에서 1시간·하루·일주일을 선택합니다. 기본값은 꺼짐이며, 추가 시점을 기준으로 오래된 참조만 제거하고 원본 파일은 유지합니다.
-- **대기 상태 유리 효과** — 노치가 없는 화면에서도 리퀴드 글래스 설정을 켜면 접힌 패널에 유리 효과가 표시됩니다.
-- **음악 호버 이동** — 음악이 재생 중일 때 노치에 마우스를 올리면 음악 탭으로 바로 전환되어 펼쳐집니다.
+- **캘린더 날짜 선택** — 날짜를 골라 해당 날짜의 일정을 확인할 수 있습니다. 오늘 일정 알림은 그대로 유지됩니다.
+- **파일 드래그 선택 화면** — 파일을 노치로 끌면 화면이 펼쳐지고, AirDrop으로 보내거나 파일 선반에 보관할 수 있습니다.
 
 ### 다운로드 및 실행
 
-1. [NotchFlow-0.3.4.dmg를 다운로드](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.4.dmg)합니다.
+1. [NotchFlow-0.3.5.dmg를 다운로드](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.5.dmg)합니다.
 2. 다운로드한 DMG를 열고 **NotchFlow**를 **Applications** 폴더로 옮깁니다.
 3. 응용 프로그램 폴더에서 NotchFlow를 실행합니다.
 4. macOS가 개발자를 확인할 수 없다는 메시지를 표시하면 앱을 Control-클릭한 뒤 **열기**를 선택합니다.
@@ -113,4 +109,4 @@ NotchFlow는 메모, 일정과 파일 목록을 외부로 전송하지 않으며
 
 ---
 
-현재 버전: **0.3.4 (build 17)**
+현재 버전: **0.3.5 (build 18)**

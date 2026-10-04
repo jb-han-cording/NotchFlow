@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 import UniformTypeIdentifiers
 #if SWIFT_PACKAGE
@@ -29,9 +30,13 @@ struct NotchView: View {
     @ObservedObject var notifications: NotificationManager
     @ObservedObject var music: MusicViewModel
     @ObservedObject var calendar: CalendarViewModel
+    @State private var rootDragTargeted = false
+    @State private var airDropTargeted = false
+    @State private var shelfTargeted = false
+    @State private var dragExitTask: Task<Void, Never>?
     @Environment(\.colorScheme) private var systemScheme
     private var scheme: ColorScheme { settings.value.theme == "Light" ? .light : settings.value.theme == "Dark" ? .dark : systemScheme }
-    private var isExpandedOrHover: Bool { model.presentsExpandedContent }
+    private var isExpandedOrHover: Bool { model.presentsExpandedContent || model.state == .dragActive }
     private var isShowingNotificationBanner: Bool {
         model.state == .notification && notifications.current != nil && !isExpandedOrHover
     }
@@ -42,6 +47,10 @@ struct NotchView: View {
             islandHeader
             if isShowingNotificationBanner, let item = notifications.current {
                 notificationBanner(item)
+            } else if model.state == .dragActive {
+                dragDropChooser
+                    .frame(width: min(settings.value.expandedWidth, model.geometry.screen.width - 16))
+                    .frame(width: viewport.size.width, alignment: .center)
             } else if isExpandedOrHover {
                 expanded
                     // Lay out controls once at their final width, then reveal
@@ -61,18 +70,18 @@ struct NotchView: View {
             )
         )
         .preferredColorScheme(settings.value.theme == "Light" ? .light : settings.value.theme == "Dark" ? .dark : nil)
-        .onDrop(of: [.fileURL], isTargeted: Binding(get: { model.state == .dragActive }, set: { active in if active { model.send(.dragEnter) } else { model.send(.dragExit) } })) { providers in
-            for provider in providers {
-                let _ = provider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { item, _ in
-                    if let data = item as? Data, let url = URL(dataRepresentation: data, relativeTo: nil) {
-                        Task { @MainActor in app.shelf.add([url]) }
-                    } else if let url = item as? URL {
-                        Task { @MainActor in app.shelf.add([url]) }
-                    }
-                }
+        .onDrop(of: [.fileURL], isTargeted: $rootDragTargeted) { _ in
+            // A drop on the header has no destination; only the two labeled
+            // zones below may handle the files.
+            false
+        }
+        .onChange(of: rootDragTargeted) { _, active in
+            if active {
+                dragExitTask?.cancel()
+                model.send(.dragEnter)
+            } else {
+                scheduleDragExit()
             }
-            model.send(.drop)
-            return true
         }
     }
 
@@ -187,6 +196,102 @@ struct NotchView: View {
         .frame(maxWidth: .infinity, minHeight: 190, maxHeight: 190, alignment: .topLeading)
         .clipped()
         .buttonStyle(NotchActionButtonStyle()).controlSize(.large)
+    }
+
+    private var dragDropChooser: some View {
+        HStack(spacing: 12) {
+            dropZone(
+                title: "AirDrop",
+                subtitle: "바로 보내기",
+                icon: "airplayaudio",
+                isTargeted: airDropTargeted,
+                destination: .airDrop,
+                binding: $airDropTargeted
+            )
+            dropZone(
+                title: "파일 선반",
+                subtitle: "나중에 사용하기",
+                icon: "tray.and.arrow.down",
+                isTargeted: shelfTargeted,
+                destination: .shelf,
+                binding: $shelfTargeted
+            )
+        }
+        .padding(.horizontal, 18)
+        .frame(maxWidth: .infinity, minHeight: 190, maxHeight: 190)
+    }
+
+    private func scheduleDragExit() {
+        dragExitTask?.cancel()
+        dragExitTask = Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(250))
+            guard !Task.isCancelled, !rootDragTargeted, !airDropTargeted, !shelfTargeted else { return }
+            model.send(.dragExit)
+        }
+    }
+
+    private enum DropDestination { case airDrop, shelf }
+
+    private func dropZone(
+        title: String,
+        subtitle: String,
+        icon: String,
+        isTargeted: Bool,
+        destination: DropDestination,
+        binding: Binding<Bool>
+    ) -> some View {
+        VStack(spacing: 8) {
+            Image(systemName: icon).font(.system(size: 28, weight: .semibold))
+            Text(title).font(.headline)
+            Text(subtitle).font(.caption).foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, minHeight: 132)
+        .background((isTargeted ? Color.accentColor : Color.primary).opacity(isTargeted ? 0.28 : 0.08), in: RoundedRectangle(cornerRadius: 16))
+        .overlay(RoundedRectangle(cornerRadius: 16).stroke(isTargeted ? Color.accentColor : Color.primary.opacity(0.12), lineWidth: isTargeted ? 2 : 1))
+        .contentShape(RoundedRectangle(cornerRadius: 16))
+        .onDrop(of: [.fileURL], isTargeted: binding) { providers in
+            receive(providers, destination: destination)
+        }
+        .onChange(of: isTargeted) { _, active in
+            if active { dragExitTask?.cancel() }
+            else if !rootDragTargeted { scheduleDragExit() }
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title), \(subtitle)")
+    }
+
+    private func receive(_ providers: [NSItemProvider], destination: DropDestination) -> Bool {
+        guard !providers.isEmpty else { return false }
+        dragExitTask?.cancel()
+        let group = DispatchGroup()
+        let lock = NSLock()
+        var urls: [URL] = []
+        for provider in providers {
+            group.enter()
+            provider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { item, _ in
+                let url: URL?
+                if let data = item as? Data { url = URL(dataRepresentation: data, relativeTo: nil) }
+                else { url = item as? URL }
+                if let url, url.isFileURL {
+                    lock.lock()
+                    urls.append(url)
+                    lock.unlock()
+                }
+                group.leave()
+            }
+        }
+        group.notify(queue: .main) {
+            guard !urls.isEmpty else { return }
+            switch destination {
+            case .shelf:
+                app.shelf.add(urls)
+                app.selectedModule = .shelf
+            case .airDrop:
+                NSSharingService(named: .sendViaAirDrop)?.perform(withItems: urls)
+            }
+        }
+        model.send(.drop)
+        return true
     }
 
     @ViewBuilder
