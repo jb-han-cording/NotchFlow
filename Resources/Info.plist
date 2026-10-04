@@ -16,5 +16,5 @@
 <key>NSCalendarsFullAccessUsageDescription</key><string>NotchFlow displays today's events and upcoming meeting reminders locally on this Mac.</string>
 <key>NSCalendarsUsageDescription</key><string>NotchFlow displays today's events and upcoming meeting reminders locally on this Mac.</string>
 <key>NSAppleEventsUsageDescription</key><string>NotchFlow reads track information and controls the music player you choose to connect.</string>
-<key>SUFeedURL</key><string>https://raw.githubusercontent.com/jb-han-cording/NotchFlow/3f552d1/appcast.xml</string>
+<key>SUFeedURL</key><string>https://raw.githubusercontent.com/jb-han-cording/NotchFlow/2d1cd13/appcast.xml</string>
 </dict></plist>
