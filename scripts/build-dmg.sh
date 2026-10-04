@@ -28,5 +28,20 @@ hdiutil create -volname "NotchFlow" -srcfolder "$DMG_STAGING" -ov -format UDZO "
 
 rm -rf "$DMG_STAGING"
 
+SPARKLE_BIN="build/SourcePackages/artifacts/sparkle/Sparkle/bin"
+SPARKLE_ACCOUNT="notchflow"
+if [[ ! -x "$SPARKLE_BIN/generate_keys" || ! -x "$SPARKLE_BIN/sign_update" ]]; then
+    echo "Sparkle signing tools are missing; refusing to publish an unsigned update." >&2
+    exit 1
+fi
+PUBLIC_KEY="$("$SPARKLE_BIN/generate_keys" --account "$SPARKLE_ACCOUNT" -p)"
+BUNDLE_KEY="$(/usr/libexec/PlistBuddy -c 'Print :SUPublicEDKey' "$APP_PATH/Contents/Info.plist")"
+if [[ "$PUBLIC_KEY" != "$BUNDLE_KEY" ]]; then
+    echo "Sparkle signing key does not match the app's SUPublicEDKey." >&2
+    exit 1
+fi
+echo "==> Sparkle signature and enclosure length:"
+"$SPARKLE_BIN/sign_update" --account "$SPARKLE_ACCOUNT" "$DMG_OUTPUT"
+
 echo "==> Successfully created $DMG_OUTPUT!"
 ls -lh "$DMG_OUTPUT"

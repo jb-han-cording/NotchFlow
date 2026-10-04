@@ -5,7 +5,7 @@
   <p>Keep music, events, files, notes, and focus timers naturally within reach.</p>
   <p><strong>macOS 14 or later · Apple silicon and Intel Macs</strong></p>
   <p>
-    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.5.dmg"><strong>Download NotchFlow 0.3.5</strong></a>
+    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.6.dmg"><strong>Download NotchFlow 0.3.6</strong></a>
   </p>
   <p><a href="README.en.md">English</a> · <a href="README.md">한국어</a></p>
 </div>
@@ -25,14 +25,14 @@ NotchFlow also works on Macs without a physical notch and on external displays, 
 
 ## Install
 
-### New in 0.3.5
+### New in 0.3.6
 
-- **Calendar date selection** — Pick a date to view its events while today's reminders continue to work.
-- **File drag chooser** — Drag files onto the notch to choose AirDrop or storage on the File Shelf.
+- **Signed updates** — The app now includes a Sparkle public key, and the distributed DMG carries an EdDSA signature.
+- **One-time manual upgrade** — Versions 0.3.5 and earlier have no trusted update key, so install this DMG manually once. Version 0.3.6 can verify future updates.
 
 ### Download and launch
 
-1. [Download the NotchFlow DMG](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.5.dmg).
+1. [Download the NotchFlow DMG](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.6.dmg).
 2. Open the DMG and drag **NotchFlow** to **Applications**.
 3. Launch NotchFlow from Applications.
 4. If macOS says it cannot verify the developer, Control-click the app, choose **Open**, and confirm.
@@ -72,7 +72,7 @@ Settings lets you adjust the modules, hover and click behavior, notch width and 
 
 Use **Settings → Updates** to check for a newer version. Sparkle handles the update dialog, download, installation, and relaunch while keeping your existing settings, notes, and file shelf data.
 
-The updater checks the project’s HTTPS manifest on GitHub, verifies the downloaded DMG checksum, and opens it for you to replace the app in Applications.
+To upgrade from 0.3.5 or earlier, quit NotchFlow, download the 0.3.6 DMG, and replace the app in Applications. The older builds lack a trusted update key and cannot install this update from within the app. Existing settings and data are preserved.
 
 ## Privacy and local data
 
@@ -97,4 +97,4 @@ For help or feature requests, visit [GitHub Issues](https://github.com/jb-han-co
 
 ---
 
-Current version: **0.3.5 (build 18)**
+Current version: **0.3.6 (build 19)**

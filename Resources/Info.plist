@@ -7,8 +7,8 @@
 <key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
 <key>CFBundleName</key><string>NotchFlow</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.3.5</string>
-<key>CFBundleVersion</key><string>18</string>
+<key>CFBundleShortVersionString</key><string>0.3.6</string>
+<key>CFBundleVersion</key><string>19</string>
 <key>CFBundleIconFile</key><string>AppIcon</string>
 <key>LSMinimumSystemVersion</key><string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 <key>LSUIElement</key><true/>
@@ -17,4 +17,5 @@
 <key>NSCalendarsUsageDescription</key><string>NotchFlow displays today's events and upcoming meeting reminders locally on this Mac.</string>
 <key>NSAppleEventsUsageDescription</key><string>NotchFlow reads track information and controls the music player you choose to connect.</string>
 <key>SUFeedURL</key><string>https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/appcast.xml</string>
+<key>SUPublicEDKey</key><string>2cOidzoXqb2ZZDlTisj68YTiu2Z02GG8J6NAS34sB4k=</string>
 </dict></plist>

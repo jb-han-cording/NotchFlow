@@ -5,7 +5,7 @@
   <p>음악, 일정, 파일, 메모와 집중 타이머를 노치에서 자연스럽게 확인하세요.</p>
   <p><strong>macOS 14 이상 · Apple silicon 및 Intel Mac 지원</strong></p>
   <p>
-    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.5.dmg"><strong>NotchFlow 0.3.5 다운로드</strong></a>
+    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.6.dmg"><strong>NotchFlow 0.3.6 다운로드</strong></a>
   </p>
   <p><a href="README.en.md">English</a> · 한국어</p>
 </div>
@@ -25,14 +25,14 @@ NotchFlow는 평소에는 노치 크기로 조용히 머물다가 마우스를 �
 
 ## 설치 방법
 
-### 0.3.5에서 새로워진 기능
+### 0.3.6에서 새로워진 기능
 
-- **캘린더 날짜 선택** — 날짜를 골라 해당 날짜의 일정을 확인할 수 있습니다. 오늘 일정 알림은 그대로 유지됩니다.
-- **파일 드래그 선택 화면** — 파일을 노치로 끌면 화면이 펼쳐지고, AirDrop으로 보내거나 파일 선반에 보관할 수 있습니다.
+- **업데이트 서명 검증** — Sparkle 공개 키를 앱에 포함하고 배포 DMG에 EdDSA 서명을 추가했습니다.
+- **이전 버전 전환 안내** — 0.3.5 이하에서는 기존 서명 키가 없어 이번 한 번은 DMG를 직접 설치해야 합니다. 0.3.6부터 이후 업데이트의 서명을 검증할 수 있습니다.
 
 ### 다운로드 및 실행
 
-1. [NotchFlow-0.3.5.dmg를 다운로드](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.5.dmg)합니다.
+1. [NotchFlow-0.3.6.dmg를 다운로드](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.6.dmg)합니다.
 2. 다운로드한 DMG를 열고 **NotchFlow**를 **Applications** 폴더로 옮깁니다.
 3. 응용 프로그램 폴더에서 NotchFlow를 실행합니다.
 4. macOS가 개발자를 확인할 수 없다는 메시지를 표시하면 앱을 Control-클릭한 뒤 **열기**를 선택합니다.
@@ -84,7 +84,7 @@ NotchFlow는 메뉴 막대 앱이라 Dock에 아이콘이나 일반 창이 나�
 
 **설정 → 업데이트**에서 새 버전을 확인할 수 있습니다. Sparkle이 업데이트 팝업에서 다운로드·설치·앱 재실행을 처리하며, 기존 설정·메모·파일 선반 정보는 그대로 유지됩니다.
 
-직접 업데이트하려면 NotchFlow를 종료한 뒤 새 DMG의 앱을 Applications 폴더에 덮어쓰면 됩니다.
+0.3.5 이하에서 0.3.6으로 업데이트할 때는 이전 배포본에 서명 키가 없어 앱 안에서 설치할 수 없습니다. NotchFlow를 종료한 뒤 새 DMG의 앱을 Applications 폴더에 덮어쓰세요. 기존 설정과 데이터는 유지됩니다.
 
 ## 개인정보와 로컬 저장
 
@@ -109,4 +109,4 @@ NotchFlow는 메모, 일정과 파일 목록을 외부로 전송하지 않으며
 
 ---
 
-현재 버전: **0.3.5 (build 18)**
+현재 버전: **0.3.6 (build 19)**

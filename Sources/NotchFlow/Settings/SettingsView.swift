@@ -364,7 +364,7 @@ struct SettingsView: View {
     private var systemSection: some View {
         Section("앱 정보") {
             LabeledContent("앱 버전") {
-                Text("\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.3.5") (\(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "18"))")
+                Text("\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.3.6") (\(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "19"))")
                     .foregroundStyle(.secondary)
             }
         }
