@@ -1,7 +1,7 @@
 {
   "version": "0.3.4",
-  "build": 11,
+  "build": 12,
   "dmgURL": "https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.4.dmg",
-  "sha256": "126f4d5cc38f1dc53bc14ebbfb4fe52ba7081194c2d4a54d6b0567b1367c76f7",
-  "releaseNotes": "음악 연동을 Apple Music과 Spotify 데스크톱 앱 중심으로 안정화했습니다. 업데이트 팝업과 릴리즈 노트·다운로드 버튼을 제공합니다. 기존 설정과 메모는 유지됩니다."
+  "sha256": "596d4254d6cf6acc2ccbbce9cda7263aa126b64ba7bc34ac01b2556b3627cd8b",
+  "releaseNotes": "음악 재생 중 노치에 마우스를 올리면 음악 탭으로 바로 전환되어 펼쳐집니다. 기존 설정과 메모는 유지됩니다."
 }

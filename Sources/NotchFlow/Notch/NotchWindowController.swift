@@ -123,6 +123,9 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
                 if hoverStartedAt == nil { hoverStartedAt = now }
                 if now - (hoverStartedAt ?? now) >= settings.value.hoverDelay {
                     hoverStartedAt = nil
+                    if model.musicPlaying, app.isEnabled(.music) {
+                        app.selectedModule = .music
+                    }
                     model.send(.hover)
                 }
             } else {

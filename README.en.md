@@ -32,6 +32,7 @@ NotchFlow also works on Macs without a physical notch and on external displays, 
 - **Join your next meeting** — Calendar finds Zoom, Google Meet, and Teams links in event URLs, locations, or notes and shows a join button for the next meeting.
 - **Automatic shelf cleanup** — Choose one hour, one day, or one week in Settings → Modules. Disabled by default. Expiry is measured from when an item was added; only shelf references are removed, never original files.
 - **Idle glass effect** — On displays without a notch, the collapsed panel now shows the glass effect when Liquid Glass is enabled.
+- **Music hover shortcut** — When music is playing, hovering over the notch switches directly to the Music tab as it expands.
 
 ### Download and launch
 
@@ -73,7 +74,7 @@ Settings lets you adjust the modules, hover and click behavior, notch width and 
 
 ## Updates
 
-Use **Settings → Updates** to check for a newer version and download it. Replacing the app keeps your existing settings, notes, and file shelf data.
+Use **Settings → Updates** to check for a newer version. Sparkle handles the update dialog, download, installation, and relaunch while keeping your existing settings, notes, and file shelf data.
 
 The updater checks the project’s HTTPS manifest on GitHub, verifies the downloaded DMG checksum, and opens it for you to replace the app in Applications.
 
@@ -100,4 +101,4 @@ For help or feature requests, visit [GitHub Issues](https://github.com/jb-han-co
 
 ---
 
-Current version: **0.3.4 (build 11)**
+Current version: **0.3.4 (build 12)**
