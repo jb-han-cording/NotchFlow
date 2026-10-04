@@ -2,15 +2,13 @@ import AppKit
 import SwiftUI
 import Combine
 
-@MainActor final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWindowDelegate {
+@MainActor final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     let app = AppState()
     var controller: NotchWindowController?
     var statusItem: NSStatusItem?
     var settingsWindow: NSWindow?
     var onboardingWindow: NSWindow?
-    var updateWindow: NSWindow?
     private var subscriptions: Set<AnyCancellable> = []
-    private var promptedUpdateBuild: Int?
     let shortcut = GlobalShortcutService()
     let updater = UpdateManager()
 
@@ -55,21 +53,13 @@ import Combine
             .sink { [weak self] _ in self?.updateStatusItem() }
             .store(in: &subscriptions)
 
-        updater.$available
-            .compactMap { $0 }
-            .sink { [weak self] manifest in
-                guard let self, self.promptedUpdateBuild != manifest.build else { return }
-                self.promptedUpdateBuild = manifest.build
-                self.openUpdatePrompt()
-            }
-            .store(in: &subscriptions)
-
         app.showSettings = { [weak self] in self?.openSettings() }
         app.showOnboarding = { [weak self] in self?.openOnboarding() }
         shortcut.onPressed = { [weak self] in guard let self else { return }; self.app.notch.send(self.app.notch.state == .expanded ? .close : .open) }
         app.shortcutError = shortcut.register(app.settings.value.shortcut)
         app.settings.onChange = { [weak self] settings in
             guard let self else { return }
+            self.updater.setAutomaticChecks(settings.automaticUpdateChecks)
             
             if let provider = MusicProvider(rawValue: settings.musicProvider), self.app.music.provider != provider {
                 self.app.music.provider = provider
@@ -86,10 +76,7 @@ import Combine
             self.setStatusItemVisible(settings.showMenuBarIcon)
         }
         setStatusItemVisible(app.settings.value.showMenuBarIcon)
-
-        if app.settings.value.automaticUpdateChecks {
-            Task { await updater.check(silent: true) }
-        }
+        updater.setAutomaticChecks(app.settings.value.automaticUpdateChecks)
         if !app.settings.value.hasCompletedOnboarding {
             DispatchQueue.main.async { [weak self] in self?.openOnboarding() }
         }
@@ -295,29 +282,4 @@ import Combine
         NSApp.activate(ignoringOtherApps: true)
     }
 
-    private func openUpdatePrompt() {
-        if let window = updateWindow {
-            window.makeKeyAndOrderFront(nil)
-            NSApp.activate(ignoringOtherApps: true)
-            return
-        }
-        let view = UpdatePromptView(updater: updater) { [weak self] in
-            self?.updateWindow?.close()
-        }
-        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 500, height: 390), styleMask: [.titled, .closable], backing: .buffered, defer: false)
-        window.center()
-        window.title = "NotchFlow 업데이트"
-        window.contentView = NSHostingView(rootView: view)
-        window.isReleasedWhenClosed = false
-        window.delegate = self
-        updateWindow = window
-        window.makeKeyAndOrderFront(nil)
-        NSApp.activate(ignoringOtherApps: true)
-    }
-
-    func windowWillClose(_ notification: Notification) {
-        if let window = notification.object as? NSWindow, window == updateWindow {
-            updateWindow = nil
-        }
-    }
 }

@@ -364,7 +364,7 @@ struct SettingsView: View {
     private var systemSection: some View {
         Section("앱 정보") {
             LabeledContent("앱 버전") {
-                Text("\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.3.4") (\(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "8"))")
+                Text("\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.3.4") (\(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "11"))")
                     .foregroundStyle(.secondary)
             }
         }
@@ -374,32 +374,26 @@ struct SettingsView: View {
                 get: { model.value.automaticUpdateChecks },
                 set: { enabled in
                     model.value.automaticUpdateChecks = enabled
-                    if enabled { Task { await updater.check(silent: true) } }
                 }
             ))
             Text(updater.status)
                 .font(.caption)
-                .foregroundStyle(updater.available == nil ? Color.secondary : Color.accentColor)
+                .foregroundStyle(Color.secondary)
 
             HStack {
                 Button(updater.checking ? "확인 중…" : "업데이트 확인") {
                     Task { await updater.check() }
                 }
-                .disabled(updater.checking || updater.downloading)
+                .disabled(updater.checking)
 
             }
 
-            if updater.available != nil {
-                Label("업데이트 팝업에서 릴리즈 노트를 확인하고 다운로드할 수 있습니다.", systemImage: "info.circle")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
             if !updater.isConfigured {
-                Label("배포용 HTTPS 업데이트 주소를 연결하면 활성화됩니다.", systemImage: "info.circle")
+                Label("Sparkle appcast 주소와 서명 키를 연결하면 활성화됩니다.", systemImage: "info.circle")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            Text("설치 파일을 검증한 뒤 DMG를 엽니다. 앱을 교체해도 기존 설정과 메모는 유지됩니다.")
+            Text("Sparkle이 다운로드, 설치, 앱 재실행까지 처리합니다. 기존 설정과 메모는 유지됩니다.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }

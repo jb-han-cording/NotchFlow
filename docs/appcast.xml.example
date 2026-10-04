@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+     xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>NotchFlow Updates</title>
+    <link>https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/appcast.xml</link>
+    <description>NotchFlow release updates</description>
+    <language>ko</language>
+    <item>
+      <title>NotchFlow VERSION</title>
+      <sparkle:version>BUILD</sparkle:version>
+      <sparkle:shortVersionString>VERSION</sparkle:shortVersionString>
+      <description><![CDATA[
+        <h2>이번 업데이트</h2>
+        <ul>
+          <li>릴리즈 노트를 여기에 작성합니다.</li>
+        </ul>
+      ]]></description>
+      <pubDate>DATE_RFC2822</pubDate>
+      <enclosure
+        url="https://github.com/jb-han-cording/NotchFlow/releases/download/vVERSION/NotchFlow-VERSION.dmg"
+        sparkle:edSignature="ED_SIGNATURE"
+        length="DMG_BYTES"
+        type="application/octet-stream" />
+    </item>
+  </channel>
+</rss>

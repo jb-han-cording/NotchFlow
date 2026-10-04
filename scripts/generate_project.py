@@ -29,6 +29,8 @@ products = put('products', dict(isa='PBXGroup', children=[product], name='Produc
 group = put('group', dict(isa='PBXGroup', children=refs+[products], sourceTree='<group>'))
 sourcephase = put('sources', dict(isa='PBXSourcesBuildPhase', buildActionMask='2147483647', files=builds, runOnlyForDeploymentPostprocessing='0'))
 frameworkphase = put('frameworks', dict(isa='PBXFrameworksBuildPhase', buildActionMask='2147483647', files=[], runOnlyForDeploymentPostprocessing='0'))
+sparkle_package = put('package:Sparkle', dict(isa='XCRemoteSwiftPackageReference', repositoryURL='https://github.com/sparkle-project/Sparkle', requirement=dict(kind='upToNextMajorVersion', minimumVersion='2.10.0')))
+sparkle_product = put('product:Sparkle', dict(isa='XCSwiftPackageProductDependency', package=sparkle_package, productName='Sparkle'))
 configs = []; projectconfigs = []
 for name in ['Debug', 'Release']:
     settings = dict(PRODUCT_BUNDLE_IDENTIFIER='local.NotchFlow', PRODUCT_NAME='$(TARGET_NAME)', SWIFT_VERSION='5.0', MACOSX_DEPLOYMENT_TARGET='14.0', INFOPLIST_FILE='Resources/Info.plist', GENERATE_INFOPLIST_FILE='NO', CODE_SIGN_ENTITLEMENTS='Resources/NotchFlow.entitlements', CODE_SIGN_STYLE='Automatic', ENABLE_HARDENED_RUNTIME='YES', ENABLE_APP_SANDBOX='NO', COMBINE_HIDPI_IMAGES='YES', LD_RUNPATH_SEARCH_PATHS='$(inherited) @executable_path/../Frameworks', SWIFT_OPTIMIZATION_LEVEL='-Onone' if name=='Debug' else '-O', SWIFT_ACTIVE_COMPILATION_CONDITIONS='DEBUG' if name=='Debug' else '', SWIFT_EMIT_LOC_STRINGS='NO')
@@ -36,8 +38,8 @@ for name in ['Debug', 'Release']:
     projectconfigs.append(put('project:'+name, dict(isa='XCBuildConfiguration', buildSettings=dict(SDKROOT='macosx', CLANG_ENABLE_MODULES='YES', MACOSX_DEPLOYMENT_TARGET='14.0'), name=name)))
 configlist = put('configlist', dict(isa='XCConfigurationList', buildConfigurations=configs, defaultConfigurationIsVisible='0', defaultConfigurationName='Release'))
 projectlist = put('projectlist', dict(isa='XCConfigurationList', buildConfigurations=projectconfigs, defaultConfigurationIsVisible='0', defaultConfigurationName='Release'))
-target = put('target', dict(isa='PBXNativeTarget', buildConfigurationList=configlist, buildPhases=[sourcephase,frameworkphase,resourcephase], buildRules=[], dependencies=[], name='NotchFlow', productName='NotchFlow', productReference=product, productType='com.apple.product-type.application'))
-project = put('project', dict(isa='PBXProject', attributes=dict(LastUpgradeCheck='1600'), buildConfigurationList=projectlist, compatibilityVersion='Xcode 14.0', developmentRegion='en', knownRegions=['en','ko','Base'], mainGroup=group, productRefGroup=products, projectDirPath='', projectRoot='', targets=[target]))
+target = put('target', dict(isa='PBXNativeTarget', buildConfigurationList=configlist, buildPhases=[sourcephase,frameworkphase,resourcephase], buildRules=[], dependencies=[], name='NotchFlow', packageProductDependencies=[sparkle_product], productName='NotchFlow', productReference=product, productType='com.apple.product-type.application'))
+project = put('project', dict(isa='PBXProject', attributes=dict(LastUpgradeCheck='1600'), buildConfigurationList=projectlist, compatibilityVersion='Xcode 14.0', developmentRegion='en', knownRegions=['en','ko','Base'], mainGroup=group, packageReferences=[sparkle_package], productRefGroup=products, projectDirPath='', projectRoot='', targets=[target]))
 folder = root/'NotchFlow.xcodeproj'; folder.mkdir(exist_ok=True)
 (folder/'project.pbxproj').write_text('// !$*UTF8*$!\n'+render(dict(archiveVersion='1', classes={}, objectVersion='56', objects=objects, rootObject=project))+'\n')
 schemes = folder/'xcshareddata/xcschemes'; schemes.mkdir(parents=True, exist_ok=True)
