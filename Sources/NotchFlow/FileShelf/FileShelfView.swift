@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 #if SWIFT_PACKAGE
 import NotchFlowCore
@@ -32,6 +33,14 @@ struct FileShelfView: View {
                         if let url = model.urls[item.id] {
                             Button { QuickLookService.shared.show(url) } label: { Image(systemName: "eye") }.buttonStyle(NotchIconButtonStyle()).help("Quick Look").accessibilityLabel("Quick Look")
                             Button { NSWorkspace.shared.activateFileViewerSelecting([url]) } label: { Image(systemName: "folder") }.buttonStyle(NotchIconButtonStyle()).help("Finder에서 보기").accessibilityLabel("Finder에서 보기")
+                            Button {
+                                NSSharingService(named: .sendViaAirDrop)?.perform(withItems: [url])
+                            } label: {
+                                Image(systemName: "square.and.arrow.up")
+                            }
+                            .buttonStyle(NotchIconButtonStyle())
+                            .help("AirDrop으로 보내기")
+                            .accessibilityLabel("AirDrop으로 보내기")
                         }
                         Button { model.remove(item) } label: { Image(systemName: "xmark") }.buttonStyle(NotchIconButtonStyle()).help("선반에서 제거").accessibilityLabel("선반에서 제거").disabled(!model.writable)
                     }.padding(12).background(.primary.opacity(0.045), in: RoundedRectangle(cornerRadius: 12))
