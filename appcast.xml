@@ -4,12 +4,12 @@
      xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>NotchFlow Updates</title>
-    <link>https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/appcast.xml</link>
+    <link>https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/appcast.xml</link>
     <description>NotchFlow release updates</description>
     <language>ko</language>
     <item>
-      <title>NotchFlow 0.3.4 (build 16)</title>
-      <sparkle:version>16</sparkle:version>
+      <title>NotchFlow 0.3.4 (build 17)</title>
+      <sparkle:version>17</sparkle:version>
       <sparkle:shortVersionString>0.3.4</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
       <description><![CDATA[
