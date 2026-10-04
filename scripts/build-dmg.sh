@@ -7,6 +7,12 @@ export DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Develope
 "$DEVELOPER_DIR/usr/bin/xcodebuild" -project NotchFlow.xcodeproj -scheme NotchFlow -configuration Release -derivedDataPath build CODE_SIGN_IDENTITY=- CODE_SIGNING_ALLOWED=YES CODE_SIGN_INJECT_BASE_ENTITLEMENTS=NO OTHER_SWIFT_FLAGS=-disable-sandbox build
 
 APP_PATH="build/Build/Products/Release/NotchFlow.app"
+
+# Sparkle ships pre-signed nested helpers. When this local build uses the
+# ad-hoc identity above, re-sign the complete bundle so macOS does not reject
+# the framework because its Team ID differs from the main executable.
+codesign --force --deep --sign - "$APP_PATH"
+
 DMG_STAGING="build/dmg_staging"
 DMG_OUTPUT="NotchFlow.dmg"
 
