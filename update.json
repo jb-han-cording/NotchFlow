@@ -1,7 +1,7 @@
 {
   "version": "0.3.4",
-  "build": 12,
+  "build": 13,
   "dmgURL": "https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.4.dmg",
-  "sha256": "596d4254d6cf6acc2ccbbce9cda7263aa126b64ba7bc34ac01b2556b3627cd8b",
+  "sha256": "96b7cc2e2ff7fc0a239573f658b735521cafdf642f357f8e59a52f30c5bcdba2",
   "releaseNotes": "음악 재생 중 노치에 마우스를 올리면 음악 탭으로 바로 전환되어 펼쳐집니다. 기존 설정과 메모는 유지됩니다."
 }
