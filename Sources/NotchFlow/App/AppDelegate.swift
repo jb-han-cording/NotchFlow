@@ -2,13 +2,15 @@ import AppKit
 import SwiftUI
 import Combine
 
-@MainActor final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
+@MainActor final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWindowDelegate {
     let app = AppState()
     var controller: NotchWindowController?
     var statusItem: NSStatusItem?
     var settingsWindow: NSWindow?
     var onboardingWindow: NSWindow?
+    var updateWindow: NSWindow?
     private var subscriptions: Set<AnyCancellable> = []
+    private var promptedUpdateBuild: Int?
     let shortcut = GlobalShortcutService()
     let updater = UpdateManager()
 
@@ -51,6 +53,15 @@ import Combine
             .store(in: &subscriptions)
         app.music.$track
             .sink { [weak self] _ in self?.updateStatusItem() }
+            .store(in: &subscriptions)
+
+        updater.$available
+            .compactMap { $0 }
+            .sink { [weak self] manifest in
+                guard let self, self.promptedUpdateBuild != manifest.build else { return }
+                self.promptedUpdateBuild = manifest.build
+                self.openUpdatePrompt()
+            }
             .store(in: &subscriptions)
 
         app.showSettings = { [weak self] in self?.openSettings() }
@@ -282,5 +293,31 @@ import Combine
         onboardingWindow = window
         window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
+    }
+
+    private func openUpdatePrompt() {
+        if let window = updateWindow {
+            window.makeKeyAndOrderFront(nil)
+            NSApp.activate(ignoringOtherApps: true)
+            return
+        }
+        let view = UpdatePromptView(updater: updater) { [weak self] in
+            self?.updateWindow?.close()
+        }
+        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 500, height: 390), styleMask: [.titled, .closable], backing: .buffered, defer: false)
+        window.center()
+        window.title = "NotchFlow 업데이트"
+        window.contentView = NSHostingView(rootView: view)
+        window.isReleasedWhenClosed = false
+        window.delegate = self
+        updateWindow = window
+        window.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
+    }
+
+    func windowWillClose(_ notification: Notification) {
+        if let window = notification.object as? NSWindow, window == updateWindow {
+            updateWindow = nil
+        }
     }
 }

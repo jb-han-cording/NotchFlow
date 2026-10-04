@@ -387,16 +387,10 @@ struct SettingsView: View {
                 }
                 .disabled(updater.checking || updater.downloading)
 
-                if updater.available != nil {
-                    Button(updater.downloading ? "다운로드 중…" : "업데이트 다운로드") {
-                        Task { await updater.downloadAndOpen() }
-                    }
-                    .disabled(updater.downloading)
-                }
             }
 
-            if let notes = updater.available?.releaseNotes, !notes.isEmpty {
-                Text(notes)
+            if updater.available != nil {
+                Label("업데이트 팝업에서 릴리즈 노트를 확인하고 다운로드할 수 있습니다.", systemImage: "info.circle")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
