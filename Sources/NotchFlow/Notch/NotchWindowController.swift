@@ -229,7 +229,7 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
         case .collapsed:
             size = geometry.collapsedFrame(musicPlaying: model.musicPlaying || app.timer.active).size
         case .hover, .expanded:
-            let contentHeight: CGFloat = 190
+            let contentHeight = module.contentHeight
             let headerHeight = max(geometry.cutout.height, 24)
             size = CGSize(width: expandedWidth, height: min(headerHeight + contentHeight, availableHeight))
         case .notification:

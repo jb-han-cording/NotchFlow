@@ -193,7 +193,7 @@ struct NotchView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 .clipped()
         }
-        .frame(maxWidth: .infinity, minHeight: 190, maxHeight: 190, alignment: .topLeading)
+        .frame(maxWidth: .infinity, minHeight: app.selectedModule.contentHeight, maxHeight: app.selectedModule.contentHeight, alignment: .topLeading)
         .clipped()
         .buttonStyle(NotchActionButtonStyle()).controlSize(.large)
     }

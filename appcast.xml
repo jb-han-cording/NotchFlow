@@ -8,6 +8,27 @@
     <description>NotchFlow release updates</description>
     <language>ko</language>
     <item>
+      <title>NotchFlow 0.3.7 (build 20)</title>
+      <sparkle:version>20</sparkle:version>
+      <sparkle:shortVersionString>0.3.7</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:minimumUpdateVersion>19</sparkle:minimumUpdateVersion>
+      <description><![CDATA[
+        <h2>이번 업데이트</h2>
+        <ul>
+          <li>캘린더에 월간 달력을 바로 표시하고 날짜를 클릭하면 해당 날의 일정을 보여줍니다.</li>
+          <li>달력과 일정 목록이 함께 보이도록 캘린더 화면을 키웠습니다.</li>
+        </ul>
+      ]]></description>
+      <pubDate>Sun, 04 Oct 2026 13:14:00 +0000</pubDate>
+      <link>https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.7.dmg</link>
+      <enclosure
+        url="https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.7.dmg"
+        sparkle:edSignature="3+gRq9KjJEBI4/BQEDOT5PHkX/llUTh6jreoxyhlnFVhmMyu7NE0pwnNYITK+jH/tFqTRQB8aWgfmDWhb599CA=="
+        length="4382346"
+        type="application/octet-stream" />
+    </item>
+    <item>
       <title>NotchFlow 0.3.6 (build 19)</title>
       <sparkle:version>19</sparkle:version>
       <sparkle:shortVersionString>0.3.6</sparkle:shortVersionString>

@@ -2,20 +2,108 @@ import SwiftUI
 
 struct CalendarView: View {
     @ObservedObject var model: CalendarViewModel
+    @State private var displayedMonth = Calendar.current.dateInterval(of: .month, for: Date())?.start ?? Date()
+
+    private var monthDays: [Date?] {
+        let calendar = Calendar.current
+        guard let range = calendar.range(of: .day, in: .month, for: displayedMonth) else { return [] }
+        let offset = (calendar.component(.weekday, from: displayedMonth) - calendar.firstWeekday + 7) % 7
+        var days = Array<Date?>(repeating: nil, count: offset)
+        for day in range {
+            days.append(calendar.date(byAdding: .day, value: day - 1, to: displayedMonth))
+        }
+        days += Array(repeating: nil, count: (7 - days.count % 7) % 7)
+        return days
+    }
+
+    private var monthCalendar: some View {
+        VStack(spacing: 7) {
+            HStack(spacing: 8) {
+                Button { moveMonth(-1) } label: { Image(systemName: "chevron.left") }
+                    .accessibilityLabel("이전 달")
+                Text(displayedMonth, format: .dateTime.year().month(.wide))
+                    .font(.system(size: 14, weight: .semibold))
+                    .frame(maxWidth: .infinity)
+                Button("오늘") { model.selectedDate = Date(); displayedMonth = startOfMonth(for: model.selectedDate) }
+                    .font(.caption)
+                Button { moveMonth(1) } label: { Image(systemName: "chevron.right") }
+                    .accessibilityLabel("다음 달")
+            }
+            .buttonStyle(.plain)
+
+            let symbols = Calendar.current.veryShortStandaloneWeekdaySymbols
+            let firstWeekday = Calendar.current.firstWeekday
+            HStack(spacing: 2) {
+                ForEach(0..<7, id: \.self) { index in
+                    Text(symbols[(firstWeekday - 1 + index) % 7])
+                        .font(.system(size: 10, weight: .medium))
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity)
+                }
+            }
+
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2), count: 7), spacing: 3) {
+                ForEach(monthDays.indices, id: \.self) { index in
+                    if let date = monthDays[index] {
+                        dayButton(date)
+                    } else {
+                        Color.clear.frame(height: 29)
+                    }
+                }
+            }
+        }
+    }
+
+    private func dayButton(_ date: Date) -> some View {
+        let selected = Calendar.current.isDate(date, inSameDayAs: model.selectedDate)
+        let today = Calendar.current.isDateInToday(date)
+        return Button {
+            model.selectedDate = date
+        } label: {
+            Text("\(Calendar.current.component(.day, from: date))")
+                .font(.system(size: 12, weight: selected ? .bold : .medium))
+                .foregroundStyle(selected ? Color.white : Color.primary)
+                .frame(maxWidth: .infinity)
+                .frame(height: 29)
+                .background(selected ? Color.notchBlue : Color.clear, in: RoundedRectangle(cornerRadius: 8))
+                .overlay(RoundedRectangle(cornerRadius: 8).stroke(today && !selected ? Color.notchBlue : Color.clear, lineWidth: 1))
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(date.formatted(date: .complete, time: .omitted))
+    }
+
+    private func startOfMonth(for date: Date) -> Date {
+        Calendar.current.dateInterval(of: .month, for: date)?.start ?? date
+    }
+
+    private func moveMonth(_ count: Int) {
+        if let next = Calendar.current.date(byAdding: .month, value: count, to: displayedMonth) {
+            displayedMonth = startOfMonth(for: next)
+        }
+    }
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 10) {
                 HStack(alignment: .center) {
-                    Text(model.selectedDate, format: .dateTime.month(.wide).day())
+                    Text("캘린더")
                         .font(.system(size: 16, weight: .bold))
                     Spacer()
                     Button("캘린더 열기") { model.openCalendar() }
                         .font(.system(size: 12, weight: .medium))
                 }
                 if model.authorized {
-                    DatePicker("날짜 선택", selection: $model.selectedDate, displayedComponents: .date)
-                        .datePickerStyle(.compact)
+                    monthCalendar
+                    Divider()
+                    HStack {
+                        Text(model.selectedDate, format: .dateTime.month().day().weekday(.wide))
+                            .font(.system(size: 13, weight: .semibold))
+                        Spacer()
+                        Text("\(model.selectedEvents.count)개 일정")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
                     if Calendar.current.isDateInToday(model.selectedDate), let next = model.next {
                         HStack {
                             Label("다음 일정", systemImage: "clock")
@@ -75,5 +163,7 @@ struct CalendarView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .buttonStyle(NotchActionButtonStyle())
         .task { model.refresh() }
+        .onAppear { displayedMonth = startOfMonth(for: model.selectedDate) }
+        .onChange(of: model.selectedDate) { _, date in displayedMonth = startOfMonth(for: date) }
     }
 }

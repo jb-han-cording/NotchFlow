@@ -1,7 +1,7 @@
 {
-  "version": "0.3.6",
-  "build": 19,
-  "dmgURL": "https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.6.dmg",
-  "sha256": "1d8d44b413f45c37992f6d9241d15c2c7090660158d8aec755a10c548cb5a0ed",
-  "releaseNotes": "업데이트 서명 검증을 추가했습니다. 이전 버전에서는 이번 한 번 새 DMG를 직접 설치해야 하며, 이후 버전부터 앱 안에서 업데이트할 수 있습니다."
+  "version": "0.3.7",
+  "build": 20,
+  "dmgURL": "https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.7.dmg",
+  "sha256": "68e8e8daa5ec452542ff60b285ba48f01ab90b55ceab39957b3ec09c4d1415f8",
+  "releaseNotes": "월간 달력이 항상 보이고 날짜를 클릭하면 해당 날짜의 일정이 바로 표시됩니다. 달력과 목록이 함께 보이도록 캘린더 화면도 넓혔습니다."
 }
