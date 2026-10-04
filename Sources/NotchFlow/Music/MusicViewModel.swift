@@ -13,8 +13,6 @@ import Combine
     private var pollTimer: Timer?
     private var generation = 0
     private var retriedArtworkTrackID: String?
-    private var providerTrack: MusicTrack?
-    private var externalTrack: MusicTrack?
     init(service: MusicProviding = MusicService()) { self.service = service }
     func connect() {
         disconnect()
@@ -36,25 +34,7 @@ import Combine
         if let observer { DistributedNotificationCenter.default().removeObserver(observer) }
         pollTimer?.invalidate()
         pollTimer = nil
-        observer = nil; connected = false; busy = false; providerTrack = nil; externalTrack = nil; track = nil; lastTrack = nil; retriedArtworkTrackID = nil
-    }
-
-    /// Uses the system-wide Now Playing metadata as a fallback for any audio-capable app.
-    func updateExternalTrack(_ externalTrack: MusicTrack?) {
-        self.externalTrack = externalTrack
-        guard providerTrack == nil else { return }
-        if let externalTrack {
-            let previousID = track?.id
-            if externalTrack.id != previousID || externalTrack.isPlaying != track?.isPlaying {
-                lastTrack = externalTrack
-                track = externalTrack
-                if externalTrack.id != previousID { onTrackChanged?(externalTrack) }
-            }
-            status = "시스템 미디어 연결됨"
-        } else if track != nil {
-            track = nil
-            status = "재생 중인 오디오가 없습니다."
-        }
+        observer = nil; connected = false; busy = false; track = nil; lastTrack = nil; retriedArtworkTrackID = nil
     }
     func openPlayer() {
         guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: provider.bundleID) else {
@@ -82,7 +62,6 @@ import Combine
                 self.busy = false
                 switch result {
                 case .success(var next):
-                    self.providerTrack = next
                     let previous = self.track?.id
                     if next?.id == previous, next?.artwork == nil {
                         next?.artwork = self.track?.artwork
@@ -100,10 +79,8 @@ import Combine
                         return
                     }
                     if let next { self.lastTrack = next }
-                    self.track = next ?? self.externalTrack
-                    self.status = next == nil
-                        ? (self.externalTrack == nil ? "재생 중인 음악이 없습니다." : "시스템 미디어 연결됨")
-                        : "\(self.provider.rawValue) 연결됨"
+                    self.track = next
+                    self.status = next == nil ? "재생 중인 음악이 없습니다." : "\(self.provider.rawValue) 연결됨"
                     if let next, next.id != previous {
                         self.onTrackChanged?(next)
                         if next.artwork == nil && self.retriedArtworkTrackID != next.id {
@@ -115,10 +92,7 @@ import Combine
                             }
                         }
                     }
-                case .failure(let error):
-                    self.providerTrack = nil
-                    self.track = self.externalTrack
-                    self.status = self.externalTrack == nil ? error.localizedDescription : "시스템 미디어 연결됨"
+                case .failure(let error): self.track = nil; self.status = error.localizedDescription
                 }
             }
         }

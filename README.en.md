@@ -59,7 +59,7 @@ The default global shortcut is **Option + Space**. You can change or disable it 
 - In **Settings → Connections → Music**, choose the player and try connecting again.
 - If access was denied, allow NotchFlow under **System Settings → Privacy & Security → Automation**.
 
-Browser playback, YouTube, podcasts, and other audio apps are shown automatically when macOS exposes system Now Playing metadata. Chrome YouTube tabs are also detected directly by their active tab title. Previous, play/pause, and next controls may not be available for those apps.
+Browser playback, YouTube, and other players are not currently supported.
 
 ### Calendar access is not appearing
 
@@ -91,7 +91,7 @@ NotchFlow does not send your notes, calendar events, or file list anywhere. It i
 ## Good to know
 
 - Requires **macOS 14.0 or later**.
-- Playback controls support the **Apple Music** and **Spotify desktop apps**. Other apps can still show their title, artist, playback state, and artwork when macOS provides system Now Playing metadata.
+- Supports the **Apple Music** and **Spotify desktop apps**.
 - Spotify artwork may be shown as a default music icon.
 - Calendar reminders are delivered while NotchFlow is running.
 - Notch placement can vary with MacBook models, external displays, full-screen apps, and menu bar auto-hide. You can choose the display and adjust the notch width in Settings.
@@ -100,4 +100,4 @@ For help or feature requests, visit [GitHub Issues](https://github.com/jb-han-co
 
 ---
 
-Current version: **0.3.4 (build 10)**
+Current version: **0.3.4 (build 11)**

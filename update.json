@@ -1,7 +1,7 @@
 {
   "version": "0.3.4",
-  "build": 10,
+  "build": 11,
   "dmgURL": "https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.4.dmg",
-  "sha256": "d8527793fed8639c2a834cb8a6cde4c671c96fda18630227f047873e252ad9e0",
-  "releaseNotes": "Chrome YouTube 활성 탭 감지, 브라우저·팟캐스트 등 시스템 미디어 정보 지원, 업데이트 팝업과 릴리즈 노트·다운로드 버튼을 추가했습니다. 기존 설정과 메모는 유지됩니다."
+  "sha256": "126f4d5cc38f1dc53bc14ebbfb4fe52ba7081194c2d4a54d6b0567b1367c76f7",
+  "releaseNotes": "음악 연동을 Apple Music과 Spotify 데스크톱 앱 중심으로 안정화했습니다. 업데이트 팝업과 릴리즈 노트·다운로드 버튼을 제공합니다. 기존 설정과 메모는 유지됩니다."
 }

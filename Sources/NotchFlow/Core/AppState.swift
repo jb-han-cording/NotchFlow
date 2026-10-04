@@ -19,8 +19,6 @@ enum Module: String, CaseIterable, Identifiable {
     let memo = MemoViewModel()
     let timer = FocusTimer()
     let notifications = NotificationManager()
-    private let systemMedia = SystemMediaObserver()
-    private let chromeMedia = ChromeMediaObserver()
     private let battery = BatteryObserver()
     private var featureSubscriptions = Set<AnyCancellable>()
     @Published var selectedModule: Module = .dashboard
@@ -51,23 +49,6 @@ enum Module: String, CaseIterable, Identifiable {
         }
         notifications.onPresentation = { [weak self] showing in self?.notch.send(showing ? .notify : .endNotification) }
         calendar.enabled = settings.value.calendarEnabled
-        systemMedia.onPlayingStateChanged = { [weak self] playing in
-            guard let self = self else { return }
-            if !self.music.connected {
-                self.notch.setMusicPlaying(playing)
-            }
-        }
-        systemMedia.onTrackChanged = { [weak self] track in
-            guard let self, self.settings.value.musicEnabled else { return }
-            self.music.updateExternalTrack(track)
-        }
-        systemMedia.start()
-        chromeMedia.onTrackChanged = { [weak self] track in
-            guard let self, self.settings.value.musicEnabled else { return }
-            self.music.updateExternalTrack(track)
-            self.notch.setMusicPlaying(track?.isPlaying == true, collapseAfter: self.settings.value.animationSpeed)
-        }
-        chromeMedia.start()
         settings.$value.map(\.shelfRetentionHours).removeDuplicates()
             .sink { [weak self] in self?.shelf.configureCleanup(hours: $0) }
             .store(in: &featureSubscriptions)
@@ -86,7 +67,7 @@ enum Module: String, CaseIterable, Identifiable {
     func isEnabled(_ module: Module) -> Bool {
         switch module { case .dashboard, .timer: return true; case .music: return settings.value.musicEnabled; case .calendar: return settings.value.calendarEnabled; case .shelf: return settings.value.shelfEnabled; case .memo: return settings.value.memoEnabled }
     }
-    func stop() { systemMedia.stop(); chromeMedia.stop(); battery.stop(); featureSubscriptions.removeAll(); memo.flush(); music.disconnect(); calendar.stop(); shelf.stop(); notifications.stop(); QuickLookService.shared.close() }
+    func stop() { battery.stop(); featureSubscriptions.removeAll(); memo.flush(); music.disconnect(); calendar.stop(); shelf.stop(); notifications.stop(); QuickLookService.shared.close() }
 }
 
 @MainActor private final class BatteryObserver {
