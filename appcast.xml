@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+     xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>NotchFlow Updates</title>
+    <link>https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/appcast.xml</link>
+    <description>NotchFlow release updates</description>
+    <language>ko</language>
+    <item>
+      <title>NotchFlow 0.3.4 (build 12)</title>
+      <sparkle:version>12</sparkle:version>
+      <sparkle:shortVersionString>0.3.4</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+        <h2>이번 업데이트</h2>
+        <ul>
+          <li>음악 재생 중 노치에 마우스를 올리면 음악 탭으로 바로 전환됩니다.</li>
+          <li>Sparkle 업데이트 프레임워크를 포함합니다.</li>
+        </ul>
+      ]]></description>
+      <pubDate>Sun, 04 Oct 2026 12:00:00 +0000</pubDate>
+      <enclosure
+        url="https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.4.dmg"
+        length="4264489"
+        type="application/octet-stream" />
+    </item>
+  </channel>
+</rss>
