@@ -59,7 +59,7 @@ The default global shortcut is **Option + Space**. You can change or disable it 
 - In **Settings → Connections → Music**, choose the player and try connecting again.
 - If access was denied, allow NotchFlow under **System Settings → Privacy & Security → Automation**.
 
-Browser playback, YouTube, podcasts, and other audio apps are shown automatically when macOS exposes system Now Playing metadata. Previous, play/pause, and next controls may not be available for those apps.
+Browser playback, YouTube, podcasts, and other audio apps are shown automatically when macOS exposes system Now Playing metadata. Chrome YouTube tabs are also detected directly by their active tab title. Previous, play/pause, and next controls may not be available for those apps.
 
 ### Calendar access is not appearing
 
@@ -100,4 +100,4 @@ For help or feature requests, visit [GitHub Issues](https://github.com/jb-han-co
 
 ---
 
-Current version: **0.3.4 (build 9)**
+Current version: **0.3.4 (build 10)**

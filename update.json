@@ -1,7 +1,7 @@
 {
   "version": "0.3.4",
-  "build": 9,
+  "build": 10,
   "dmgURL": "https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.4.dmg",
-  "sha256": "5648a7c106c16ff9e7afb9f3b571c01bbabef121ed827ad042b85f34436eefc5",
-  "releaseNotes": "브라우저·YouTube·팟캐스트 등 시스템 미디어 정보 지원, 업데이트 팝업과 릴리즈 노트·다운로드 버튼을 추가했습니다. 기존 설정과 메모는 유지됩니다."
+  "sha256": "d8527793fed8639c2a834cb8a6cde4c671c96fda18630227f047873e252ad9e0",
+  "releaseNotes": "Chrome YouTube 활성 탭 감지, 브라우저·팟캐스트 등 시스템 미디어 정보 지원, 업데이트 팝업과 릴리즈 노트·다운로드 버튼을 추가했습니다. 기존 설정과 메모는 유지됩니다."
 }
