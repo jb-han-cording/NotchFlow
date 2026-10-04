@@ -101,4 +101,4 @@ For help or feature requests, visit [GitHub Issues](https://github.com/jb-han-co
 
 ---
 
-Current version: **0.3.4 (build 13)**
+Current version: **0.3.4 (build 14)**
