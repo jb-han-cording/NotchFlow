@@ -8,6 +8,16 @@ import NotchFlowCore
     @Published private(set) var events: [CalendarEvent] = []
     @Published private(set) var selectedEvents: [CalendarEvent] = []
     @Published private(set) var monthEvents: [CalendarEvent] = []
+    @Published private(set) var preferredContentHeight: CGFloat = 430
+
+    func updateContentHeight(_ height: CGFloat) {
+        guard height.isFinite, height > 0 else { return }
+        // Include the notch's module toolbar and content padding. Bound the
+        // expansion; ScrollView handles overflow beyond this comfortable size.
+        let target = min(760, max(430, ceil(height + 68)))
+        guard abs(target - preferredContentHeight) >= 1 else { return }
+        preferredContentHeight = target
+    }
     @Published private(set) var authorized = false
     @Published private(set) var status = "캘린더를 연결하면 오늘의 일정을 볼 수 있습니다."
     @Published private(set) var requesting = false

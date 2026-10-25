@@ -1,7 +1,7 @@
 {
-  "version": "0.3.9",
-  "build": 22,
-  "dmgURL": "https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.9.dmg",
-  "sha256": "6d350afc7714e0b31a2d9a8d2a3f887359005cdec55a00de064d1b387daf25cc",
-  "releaseNotes": "메모와 파일 선반 화면을 확대하고 탭별 높이 전환, 더 넓은 메모 입력창, 작은 화면에 맞는 높이 조절을 적용했습니다."
+  "version": "0.3.10",
+  "build": 23,
+  "dmgURL": "https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.10.dmg",
+  "sha256": "0a75e65099e65fc2a51702564ed4d078d5849643bfff65789067504fb1756721",
+  "releaseNotes": "선택 날짜의 실제 일정 목록 높이에 맞춰 캘린더가 자동으로 늘어나고 줄어듭니다. 화면 높이나 최대 확장 크기를 넘는 일정은 스크롤로 볼 수 있습니다."
 }

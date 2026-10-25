@@ -191,6 +191,12 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
                 self?.setupHoverTimer()
                 DispatchQueue.main.async { self?.layout() }
             }.store(in: &cancellables)
+        app.calendar.$preferredContentHeight.removeDuplicates().sink { [weak self] _ in
+            DispatchQueue.main.async { [weak self] in
+                guard let self, self.module == .calendar else { return }
+                self.layout(animated: true)
+            }
+        }.store(in: &cancellables)
         app.$selectedModule.sink { [weak self] mod in
             guard let self else { return }
             let changed = self.module != mod
@@ -236,7 +242,7 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
         case .collapsed:
             size = geometry.collapsedFrame(musicPlaying: model.musicPlaying || app.timer.active).size
         case .hover, .expanded:
-            let contentHeight = module.contentHeight
+            let contentHeight = module == .calendar ? app.calendar.preferredContentHeight : module.contentHeight
             let headerHeight = max(geometry.cutout.height, 24)
             size = CGSize(width: expandedWidth, height: min(headerHeight + contentHeight, availableHeight))
         case .notification:

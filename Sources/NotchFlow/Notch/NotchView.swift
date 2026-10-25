@@ -194,7 +194,7 @@ struct NotchView: View {
                 .clipped()
         }
         .frame(maxWidth: .infinity)
-        .frame(height: min(app.selectedModule.contentHeight, max(0, availableHeight)), alignment: .topLeading)
+        .frame(height: min(app.selectedModule == .calendar ? calendar.preferredContentHeight : app.selectedModule.contentHeight, max(0, availableHeight)), alignment: .topLeading)
         .clipped()
         .buttonStyle(NotchActionButtonStyle()).controlSize(.large)
     }

@@ -1,5 +1,12 @@
 import SwiftUI
 
+private struct CalendarContentHeightKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
 struct CalendarView: View {
     @ObservedObject var model: CalendarViewModel
     @State private var displayedMonth = Calendar.current.dateInterval(of: .month, for: Date())?.start ?? Date()
@@ -98,7 +105,7 @@ struct CalendarView: View {
     }
 
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
+        ScrollView(.vertical, showsIndicators: true) {
             VStack(alignment: .leading, spacing: 10) {
                 HStack(alignment: .center) {
                     Text("캘린더")
@@ -173,7 +180,15 @@ struct CalendarView: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .topLeading)
+            .background {
+                // Measure the scroll content, never the viewport, so resizing
+                // the window cannot feed its own height back into the layout.
+                GeometryReader { geometry in
+                    Color.clear.preference(key: CalendarContentHeightKey.self, value: geometry.size.height)
+                }
+            }
         }
+        .onPreferenceChange(CalendarContentHeightKey.self) { model.updateContentHeight($0) }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .buttonStyle(NotchActionButtonStyle())
         .task { model.refresh() }

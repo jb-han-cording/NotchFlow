@@ -8,6 +8,27 @@
     <description>NotchFlow release updates</description>
     <language>ko</language>
     <item>
+      <title>NotchFlow 0.3.10 (build 23)</title>
+      <sparkle:version>23</sparkle:version>
+      <sparkle:shortVersionString>0.3.10</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:minimumUpdateVersion>19</sparkle:minimumUpdateVersion>
+      <description><![CDATA[
+        <h2>이번 업데이트</h2>
+        <ul>
+          <li>선택한 날짜의 일정 목록 높이에 맞춰 캘린더가 자동으로 늘어나고 줄어듭니다.</li>
+          <li>화면 높이와 최대 확장 크기를 넘는 일정은 스크롤로 확인할 수 있습니다.</li>
+        </ul>
+      ]]></description>
+      <pubDate>Sun, 25 Oct 2026 13:29:00 +0000</pubDate>
+      <link>https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.10.dmg</link>
+      <enclosure
+        url="https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.10.dmg"
+        sparkle:edSignature="ZxMCn/PHx15skV8Cu00C5CXBwKkkiLq1IcEOMw8cvOQ51nJ2VmNKzrV4fuPdJVHMdlPO0pdbgsSWAfZ2/gbVCg=="
+        length="4430134"
+        type="application/octet-stream" />
+    </item>
+    <item>
       <title>NotchFlow 0.3.9 (build 22)</title>
       <sparkle:version>22</sparkle:version>
       <sparkle:shortVersionString>0.3.9</sparkle:shortVersionString>

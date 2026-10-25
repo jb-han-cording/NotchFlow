@@ -5,7 +5,7 @@
   <p>Keep music, events, files, notes, and focus timers naturally within reach.</p>
   <p><strong>macOS 14 or later · Apple silicon and Intel Macs</strong></p>
   <p>
-    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.9.dmg"><strong>Download NotchFlow 0.3.9</strong></a>
+    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.10.dmg"><strong>Download NotchFlow 0.3.10</strong></a>
   </p>
   <p><a href="README.en.md">English</a> · <a href="README.md">한국어</a></p>
 </div>
@@ -25,15 +25,14 @@ NotchFlow also works on Macs without a physical notch and on external displays, 
 
 ## Install
 
-### New in 0.3.9
+### New in 0.3.10
 
-- **Tab-specific heights** — Memo expands to 500pt, File Shelf to 440pt and Calendar to 430pt. Music, Timer and Overview stay compact.
-- **Larger memo editor** — The editor is now 220pt tall, with scroll indicators enabled.
-- **Smooth tab changes** — Panel height animates between tabs and adapts to the available display height.
+- **Adaptive Calendar height** — The panel smoothly grows and shrinks between 430 and 760pt based on the actual content of the selected day.
+- **More events at a glance** — Expansion respects the available display height; additional events remain accessible by scrolling.
 
 ### Download and launch
 
-1. [Download the NotchFlow DMG](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.9.dmg).
+1. [Download the NotchFlow DMG](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.10.dmg).
 2. Open the DMG and drag **NotchFlow** to **Applications**.
 3. Launch NotchFlow from Applications.
 4. If macOS says it cannot verify the developer, Control-click the app, choose **Open**, and confirm.
@@ -98,4 +97,4 @@ For help or feature requests, visit [GitHub Issues](https://github.com/jb-han-co
 
 ---
 
-Current version: **0.3.9 (build 22)**
+Current version: **0.3.10 (build 23)**

@@ -5,7 +5,7 @@
   <p>음악, 일정, 파일, 메모와 집중 타이머를 노치에서 자연스럽게 확인하세요.</p>
   <p><strong>macOS 14 이상 · Apple silicon 및 Intel Mac 지원</strong></p>
   <p>
-    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.9.dmg"><strong>NotchFlow 0.3.9 다운로드</strong></a>
+    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.10.dmg"><strong>NotchFlow 0.3.10 다운로드</strong></a>
   </p>
   <p><a href="README.en.md">English</a> · 한국어</p>
 </div>
@@ -25,15 +25,14 @@ NotchFlow는 평소에는 노치 크기로 조용히 머물다가 마우스를 �
 
 ## 설치 방법
 
-### 0.3.9에서 새로워진 기능
+### 0.3.10에서 새로워진 기능
 
-- **탭별 화면 높이** — 메모는 500pt, 파일 선반은 440pt, 캘린더는 430pt로 펼쳐집니다. 음악·타이머·요약은 간결한 크기를 유지합니다.
-- **넓어진 메모 입력창** — 본문 편집 공간을 220pt로 늘리고 스크롤 표시를 활성화했습니다.
-- **부드러운 탭 전환** — 탭에 맞춰 화면 높이가 전환되고 작은 화면에서는 가용 높이에 맞춰 조절됩니다.
+- **일정에 맞춰 커지는 캘린더** — 선택 날짜의 실제 콘텐츠 높이에 따라 430~760pt 사이에서 부드럽게 늘어나고 줄어듭니다.
+- **많은 일정도 편하게 보기** — 화면의 가용 높이를 넘지 않으며, 최대 크기를 넘는 일정은 스크롤로 볼 수 있습니다.
 
 ### 다운로드 및 실행
 
-1. [NotchFlow-0.3.9.dmg를 다운로드](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.9.dmg)합니다.
+1. [NotchFlow-0.3.10.dmg를 다운로드](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.10.dmg)합니다.
 2. 다운로드한 DMG를 열고 **NotchFlow**를 **Applications** 폴더로 옮깁니다.
 3. 응용 프로그램 폴더에서 NotchFlow를 실행합니다.
 4. macOS가 개발자를 확인할 수 없다는 메시지를 표시하면 앱을 Control-클릭한 뒤 **열기**를 선택합니다.
@@ -110,4 +109,4 @@ NotchFlow는 메모, 일정과 파일 목록을 외부로 전송하지 않으며
 
 ---
 
-현재 버전: **0.3.9 (build 22)**
+현재 버전: **0.3.10 (build 23)**
