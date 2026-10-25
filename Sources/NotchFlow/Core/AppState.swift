@@ -9,7 +9,14 @@ enum Module: String, CaseIterable, Identifiable {
     case dashboard = "Overview", music = "Music", calendar = "Calendar", shelf = "Shelf", memo = "Memo", timer = "Timer"
     var id: String { rawValue }
     var icon: String { switch self { case .dashboard: return "square.grid.2x2"; case .music: return "waveform"; case .calendar: return "calendar"; case .shelf: return "tray"; case .memo: return "square.and.pencil"; case .timer: return "timer" } }
-    var contentHeight: CGFloat { self == .calendar ? 430 : 190 }
+    var contentHeight: CGFloat {
+        switch self {
+        case .memo: return 500
+        case .shelf: return 440
+        case .calendar: return 430
+        case .dashboard, .music, .timer: return 190
+        }
+    }
 }
 @MainActor final class AppState: ObservableObject {
     let notch = NotchViewModel()

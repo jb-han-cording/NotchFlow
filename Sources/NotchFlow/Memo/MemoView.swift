@@ -9,7 +9,7 @@ struct MemoView: View {
     @State private var deleteID: UUID?
 
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
+        ScrollView(.vertical, showsIndicators: true) {
             VStack(alignment: .leading, spacing: 10) {
                 HStack(alignment: .center) {
                     Text("Quick Memo")
@@ -40,7 +40,7 @@ struct MemoView: View {
                         .font(.body)
                         .scrollContentBackground(.hidden)
                         .padding(6)
-                        .frame(minHeight: 70, maxHeight: 100)
+                        .frame(height: 220)
                         .background(.primary.opacity(0.045), in: RoundedRectangle(cornerRadius: 10))
                         .id(memo.id)
                     ForEach(memo.checklist) { item in

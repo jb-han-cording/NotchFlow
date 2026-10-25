@@ -192,8 +192,15 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
                 DispatchQueue.main.async { self?.layout() }
             }.store(in: &cancellables)
         app.$selectedModule.sink { [weak self] mod in
-            self?.module = mod
-            self?.layout()
+            guard let self else { return }
+            let changed = self.module != mod
+            self.module = mod
+            // @Published emits before AppState stores the new value. Resize
+            // after SwiftUI has received the selected tab, including rapid switches.
+            DispatchQueue.main.async { [weak self] in
+                guard let self, self.module == mod else { return }
+                self.layout(animated: changed)
+            }
         }.store(in: &cancellables)
     }
 
@@ -223,7 +230,7 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
         guard let screen = screens.selectedScreen(id: selectedScreen) else { panel.orderOut(nil); return }
         let geometry = screens.geometry(for: screen)
         if model.geometry != geometry { model.geometry = geometry; AppLog.app.info("Screen Detected; Notch Detected: \(geometry.hasNotch)") }
-        let availableHeight = max(screen.visibleFrame.height, screen.frame.height - 12, 160)
+        let availableHeight = max(1, screen.frame.maxY - screen.visibleFrame.minY - 12)
         let size: CGSize
         switch model.state {
         case .collapsed:

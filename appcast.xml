@@ -8,6 +8,28 @@
     <description>NotchFlow release updates</description>
     <language>ko</language>
     <item>
+      <title>NotchFlow 0.3.9 (build 22)</title>
+      <sparkle:version>22</sparkle:version>
+      <sparkle:shortVersionString>0.3.9</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:minimumUpdateVersion>19</sparkle:minimumUpdateVersion>
+      <description><![CDATA[
+        <h2>이번 업데이트</h2>
+        <ul>
+          <li>메모와 파일 선반 탭을 넓혀 메뉴에 맞는 높이로 표시합니다.</li>
+          <li>메모 본문 입력창을 확대하고 스크롤 표시를 활성화했습니다.</li>
+          <li>탭 전환 시 높이가 부드럽게 바뀌며 작은 화면의 가용 높이에 맞춰 조절됩니다.</li>
+        </ul>
+      ]]></description>
+      <pubDate>Sun, 25 Oct 2026 13:23:00 +0000</pubDate>
+      <link>https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.9.dmg</link>
+      <enclosure
+        url="https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.9.dmg"
+        sparkle:edSignature="1VykJR3Vvdg2ukyFdX/G69xAy7ZlzLzYjbi1vtVxLj2XjkTGuMThUEHwpbTaDdiRtNMKgCqbz3GlmbTGw11IAQ=="
+        length="4414869"
+        type="application/octet-stream" />
+    </item>
+    <item>
       <title>NotchFlow 0.3.8 (build 21)</title>
       <sparkle:version>21</sparkle:version>
       <sparkle:shortVersionString>0.3.8</sparkle:shortVersionString>

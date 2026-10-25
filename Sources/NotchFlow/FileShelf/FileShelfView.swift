@@ -15,7 +15,7 @@ struct FileShelfView: View {
     }
 
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
+        ScrollView(.vertical, showsIndicators: true) {
             VStack(alignment: .leading, spacing: 10) {
                 HStack(alignment: .center) {
                     Text("파일을 잠시 모아두세요")

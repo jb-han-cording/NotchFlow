@@ -52,7 +52,7 @@ struct NotchView: View {
                     .frame(width: min(settings.value.expandedWidth, model.geometry.screen.width - 16))
                     .frame(width: viewport.size.width, alignment: .center)
             } else if isExpandedOrHover {
-                expanded
+                expanded(availableHeight: viewport.size.height - max(model.geometry.cutout.height, 24))
                     // Lay out controls once at their final width, then reveal
                     // equally on both sides instead of reflowing from an edge.
                     .frame(width: min(settings.value.expandedWidth, model.geometry.screen.width - 16))
@@ -156,7 +156,7 @@ struct NotchView: View {
         }
     }
 
-    private var expanded: some View {
+    private func expanded(availableHeight: CGFloat) -> some View {
         VStack(spacing: 0) {
             HStack(spacing: 4) {
                 ForEach(Module.allCases.filter { app.isEnabled($0) }) { module in
@@ -193,7 +193,8 @@ struct NotchView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 .clipped()
         }
-        .frame(maxWidth: .infinity, minHeight: app.selectedModule.contentHeight, maxHeight: app.selectedModule.contentHeight, alignment: .topLeading)
+        .frame(maxWidth: .infinity)
+        .frame(height: min(app.selectedModule.contentHeight, max(0, availableHeight)), alignment: .topLeading)
         .clipped()
         .buttonStyle(NotchActionButtonStyle()).controlSize(.large)
     }
