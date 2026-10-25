@@ -17,4 +17,11 @@ public struct CalendarEvent: Identifiable, Equatable, Sendable {
     public static func upcoming(_ events: [CalendarEvent], at now: Date) -> [CalendarEvent] {
         events.filter { $0.end > now }.sorted { $0.start == $1.start ? $0.id < $1.id : $0.start < $1.start }
     }
+    /// Calendar days use an exclusive end, so an event ending at midnight
+    /// does not also appear on the following day.
+    public func occurs(on date: Date, calendar: Calendar = .current) -> Bool {
+        guard let day = calendar.dateInterval(of: .day, for: date) else { return false }
+        if start == end { return start >= day.start && start < day.end }
+        return start < day.end && end > day.start
+    }
 }

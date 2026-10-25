@@ -8,6 +8,28 @@
     <description>NotchFlow release updates</description>
     <language>ko</language>
     <item>
+      <title>NotchFlow 0.3.8 (build 21)</title>
+      <sparkle:version>21</sparkle:version>
+      <sparkle:shortVersionString>0.3.8</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:minimumUpdateVersion>19</sparkle:minimumUpdateVersion>
+      <description><![CDATA[
+        <h2>이번 업데이트</h2>
+        <ul>
+          <li>달력에서 일정이 있는 날짜에 점을 표시합니다.</li>
+          <li>월 이동 시 선택 날짜를 함께 이동하고, 일정 종료 시간과 개별 회의 참가 링크를 보여줍니다.</li>
+          <li>파일 선반에 파일명 검색과 검색 결과 개수를 추가했습니다.</li>
+        </ul>
+      ]]></description>
+      <pubDate>Sun, 25 Oct 2026 13:17:00 +0000</pubDate>
+      <link>https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.8.dmg</link>
+      <enclosure
+        url="https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.8.dmg"
+        sparkle:edSignature="zpGjB+FT31ts1jmsfti5TEhmgpGI/CP/gSVzXBvrSuFzGHVg9ZYNTlnTF7essWXkNco+1ZGC8PNtnkwq84+DBg=="
+        length="4412655"
+        type="application/octet-stream" />
+    </item>
+    <item>
       <title>NotchFlow 0.3.7 (build 20)</title>
       <sparkle:version>20</sparkle:version>
       <sparkle:shortVersionString>0.3.7</sparkle:shortVersionString>

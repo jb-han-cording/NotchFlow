@@ -5,7 +5,7 @@
   <p>음악, 일정, 파일, 메모와 집중 타이머를 노치에서 자연스럽게 확인하세요.</p>
   <p><strong>macOS 14 이상 · Apple silicon 및 Intel Mac 지원</strong></p>
   <p>
-    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.7.dmg"><strong>NotchFlow 0.3.7 다운로드</strong></a>
+    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.8.dmg"><strong>NotchFlow 0.3.8 다운로드</strong></a>
   </p>
   <p><a href="README.en.md">English</a> · 한국어</p>
 </div>
@@ -25,14 +25,15 @@ NotchFlow는 평소에는 노치 크기로 조용히 머물다가 마우스를 �
 
 ## 설치 방법
 
-### 0.3.7에서 새로워진 기능
+### 0.3.8에서 새로워진 기능
 
-- **항상 보이는 월간 달력** — 이전·다음 달을 넘기고 날짜를 클릭하면 해당 날짜의 일정이 바로 표시됩니다.
-- **넓어진 캘린더 화면** — 달력과 일정 목록을 노치에서 함께 볼 수 있습니다.
+- **일정이 있는 날 표시** — 월간 달력의 날짜 아래 점으로 일정을 확인할 수 있습니다. 여러 날에 걸친 일정과 자정 종료도 반영합니다.
+- **일정 탐색 개선** — 월 이동 시 선택 날짜도 함께 이동하며, 각 일정의 종료 시간과 회의 참가 링크를 표시합니다.
+- **파일 선반 검색** — 파일 이름으로 검색하고 결과 개수를 확인할 수 있습니다.
 
 ### 다운로드 및 실행
 
-1. [NotchFlow-0.3.7.dmg를 다운로드](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.7.dmg)합니다.
+1. [NotchFlow-0.3.8.dmg를 다운로드](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.8.dmg)합니다.
 2. 다운로드한 DMG를 열고 **NotchFlow**를 **Applications** 폴더로 옮깁니다.
 3. 응용 프로그램 폴더에서 NotchFlow를 실행합니다.
 4. macOS가 개발자를 확인할 수 없다는 메시지를 표시하면 앱을 Control-클릭한 뒤 **열기**를 선택합니다.
@@ -109,4 +110,4 @@ NotchFlow는 메모, 일정과 파일 목록을 외부로 전송하지 않으며
 
 ---
 
-현재 버전: **0.3.7 (build 20)**
+현재 버전: **0.3.8 (build 21)**

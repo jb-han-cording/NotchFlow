@@ -5,7 +5,7 @@
   <p>Keep music, events, files, notes, and focus timers naturally within reach.</p>
   <p><strong>macOS 14 or later · Apple silicon and Intel Macs</strong></p>
   <p>
-    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.7.dmg"><strong>Download NotchFlow 0.3.7</strong></a>
+    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.8.dmg"><strong>Download NotchFlow 0.3.8</strong></a>
   </p>
   <p><a href="README.en.md">English</a> · <a href="README.md">한국어</a></p>
 </div>
@@ -25,14 +25,15 @@ NotchFlow also works on Macs without a physical notch and on external displays, 
 
 ## Install
 
-### New in 0.3.7
+### New in 0.3.8
 
-- **Always-visible monthly calendar** — Move between months and click a date to see its events immediately.
-- **Larger Calendar panel** — View the calendar and event list together in the notch.
+- **Calendar event indicators** — Dots identify days with events, including multi-day events and exclusive midnight endings.
+- **Improved event browsing** — Month navigation also moves the selection. Each event shows its end time and meeting link.
+- **File Shelf search** — Filter files by name and see the result count.
 
 ### Download and launch
 
-1. [Download the NotchFlow DMG](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.7.dmg).
+1. [Download the NotchFlow DMG](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.8.dmg).
 2. Open the DMG and drag **NotchFlow** to **Applications**.
 3. Launch NotchFlow from Applications.
 4. If macOS says it cannot verify the developer, Control-click the app, choose **Open**, and confirm.
@@ -97,4 +98,4 @@ For help or feature requests, visit [GitHub Issues](https://github.com/jb-han-co
 
 ---
 
-Current version: **0.3.7 (build 20)**
+Current version: **0.3.8 (build 21)**

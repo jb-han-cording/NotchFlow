@@ -7,6 +7,7 @@ import NotchFlowCore
 @MainActor final class CalendarViewModel: ObservableObject {
     @Published private(set) var events: [CalendarEvent] = []
     @Published private(set) var selectedEvents: [CalendarEvent] = []
+    @Published private(set) var monthEvents: [CalendarEvent] = []
     @Published private(set) var authorized = false
     @Published private(set) var status = "캘린더를 연결하면 오늘의 일정을 볼 수 있습니다."
     @Published private(set) var requesting = false
@@ -70,7 +71,7 @@ import NotchFlowCore
         authorization = service.authorization
         authorized = authorization == .fullAccess
         guard authorized else {
-            events = []; selectedEvents = []; stopTimers()
+            events = []; selectedEvents = []; monthEvents = []; stopTimers()
             switch authorization {
             case .notDetermined: status = "캘린더를 연결하면 오늘의 일정을 볼 수 있습니다."
             case .restricted: status = "이 Mac의 관리 정책으로 캘린더 접근이 제한되어 있습니다. 기기 관리자에게 문의하세요."
@@ -82,13 +83,12 @@ import NotchFlowCore
         let now = Date(), todayStart = Calendar.current.startOfDay(for: now)
         let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: todayStart)!
         events = service.events(from: todayStart, to: tomorrow).sorted { $0.start < $1.start }
-        if Calendar.current.isDateInToday(selectedDate) {
-            selectedEvents = events
+        if let month = Calendar.current.dateInterval(of: .month, for: selectedDate) {
+            monthEvents = service.events(from: month.start, to: month.end).sorted { $0.start < $1.start }
         } else {
-            let selectedStart = Calendar.current.startOfDay(for: selectedDate)
-            let selectedEnd = Calendar.current.date(byAdding: .day, value: 1, to: selectedStart)!
-            selectedEvents = service.events(from: selectedStart, to: selectedEnd).sorted { $0.start < $1.start }
+            monthEvents = []
         }
+        selectedEvents = monthEvents.filter { $0.occurs(on: selectedDate) }
         let dayLabel = Calendar.current.isDateInToday(selectedDate) ? "오늘" : selectedDate.formatted(.dateTime.month().day())
         status = selectedEvents.isEmpty ? "\(dayLabel)은 예정된 일정이 없습니다." : "\(dayLabel) \(selectedEvents.count)개의 일정"
         scheduleReminder(now: now)
@@ -103,6 +103,7 @@ import NotchFlowCore
         if let midnightTimer { RunLoop.main.add(midnightTimer, forMode: .common) }
     }
     var next: CalendarEvent? { CalendarEvent.upcoming(events.filter { !$0.isAllDay }, at: Date()).first }
+    func eventCount(on date: Date) -> Int { monthEvents.filter { $0.occurs(on: date) }.count }
     private func scheduleReminder(now: Date) {
         reminderTimer?.invalidate()
         let candidates = events.filter { !$0.isAllDay && $0.start > now && !delivered.contains($0.id) }.sorted { $0.start < $1.start }

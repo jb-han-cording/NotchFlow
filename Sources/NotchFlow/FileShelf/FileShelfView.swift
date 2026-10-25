@@ -7,6 +7,12 @@ import NotchFlowCore
 struct FileShelfView: View {
     @ObservedObject var model: FileShelfViewModel
     @State private var confirmClear = false
+    @State private var searchText = ""
+
+    private var filteredItems: [ShelfItem] {
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        return query.isEmpty ? model.items : model.items.filter { $0.name.localizedStandardContains(query) }
+    }
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -22,7 +28,22 @@ struct FileShelfView: View {
                         .disabled(model.items.isEmpty || !model.writable)
                 }
                 if model.items.isEmpty { ContentUnavailableView("Drop to Shelf", systemImage: "tray.and.arrow.down", description: Text("파일과 폴더를 이곳에 놓으세요.\n원본은 이동하거나 복사하지 않습니다.")) }
-                ForEach(model.items) { item in
+                if !model.items.isEmpty {
+                    HStack {
+                        Image(systemName: "magnifyingglass").foregroundStyle(.secondary)
+                        TextField("파일 이름 검색", text: $searchText).textFieldStyle(.plain)
+                        if !searchText.isEmpty {
+                            Button { searchText = "" } label: { Image(systemName: "xmark.circle.fill") }
+                                .buttonStyle(.plain).accessibilityLabel("검색 지우기")
+                        }
+                        Text("\(filteredItems.count)개").font(.caption).foregroundStyle(.secondary)
+                    }
+                    .padding(8).background(.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 8))
+                    if filteredItems.isEmpty {
+                        Text("검색 결과가 없습니다.").font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+                ForEach(filteredItems) { item in
                     HStack(spacing: 12) {
                         Image(nsImage: model.urls[item.id].map { NSWorkspace.shared.icon(forFile: $0.path) } ?? NSImage(systemSymbolName: "questionmark.folder", accessibilityDescription: nil)!).resizable().frame(width: 32, height: 32)
                         VStack(alignment: .leading, spacing: 4) {

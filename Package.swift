@@ -7,5 +7,6 @@ let package = Package(name: "NotchFlow", platforms: [.macOS(.v14)], products: [
     .package(url: "https://github.com/sparkle-project/Sparkle", from: "2.10.0")
 ], targets: [
     .target(name: "NotchFlowCore"),
-    .executableTarget(name: "NotchFlow", dependencies: ["NotchFlowCore", .product(name: "Sparkle", package: "Sparkle")])
+    .executableTarget(name: "NotchFlow", dependencies: ["NotchFlowCore", .product(name: "Sparkle", package: "Sparkle")]),
+    .testTarget(name: "NotchFlowCoreTests", dependencies: ["NotchFlowCore"])
 ])

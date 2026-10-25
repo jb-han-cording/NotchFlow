@@ -17,7 +17,8 @@ struct CalendarView: View {
     }
 
     private var monthCalendar: some View {
-        VStack(spacing: 7) {
+        let days = monthDays
+        return VStack(spacing: 7) {
             HStack(spacing: 8) {
                 Button { moveMonth(-1) } label: { Image(systemName: "chevron.left") }
                     .accessibilityLabel("이전 달")
@@ -43,8 +44,8 @@ struct CalendarView: View {
             }
 
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2), count: 7), spacing: 3) {
-                ForEach(monthDays.indices, id: \.self) { index in
-                    if let date = monthDays[index] {
+                ForEach(days.indices, id: \.self) { index in
+                    if let date = days[index] {
                         dayButton(date)
                     } else {
                         Color.clear.frame(height: 29)
@@ -57,6 +58,7 @@ struct CalendarView: View {
     private func dayButton(_ date: Date) -> some View {
         let selected = Calendar.current.isDate(date, inSameDayAs: model.selectedDate)
         let today = Calendar.current.isDateInToday(date)
+        let count = model.eventCount(on: date)
         return Button {
             model.selectedDate = date
         } label: {
@@ -67,10 +69,18 @@ struct CalendarView: View {
                 .frame(height: 29)
                 .background(selected ? Color.notchBlue : Color.clear, in: RoundedRectangle(cornerRadius: 8))
                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(today && !selected ? Color.notchBlue : Color.clear, lineWidth: 1))
+                .overlay(alignment: .bottom) {
+                    if count > 0 {
+                        Circle().fill(selected ? Color.white : Color.notchBlue)
+                            .frame(width: 4, height: 4).padding(.bottom, 2)
+                    }
+                }
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityLabel(date.formatted(date: .complete, time: .omitted))
+        .accessibilityValue("\(count)개 일정\(selected ? ", 선택됨" : "")")
+        .help("\(count)개 일정")
     }
 
     private func startOfMonth(for date: Date) -> Date {
@@ -80,6 +90,10 @@ struct CalendarView: View {
     private func moveMonth(_ count: Int) {
         if let next = Calendar.current.date(byAdding: .month, value: count, to: displayedMonth) {
             displayedMonth = startOfMonth(for: next)
+            // Preserve the selected day when possible (Jan 31 → Feb 28/29).
+            let day = Calendar.current.component(.day, from: model.selectedDate)
+            let lastDay = Calendar.current.range(of: .day, in: .month, for: displayedMonth)?.count ?? 1
+            model.selectedDate = Calendar.current.date(byAdding: .day, value: min(day, lastDay) - 1, to: displayedMonth) ?? displayedMonth
         }
     }
 
@@ -112,13 +126,6 @@ struct CalendarView: View {
                             else { Text(next.start, style: .relative); Text("후") }
                         }.font(.caption).foregroundStyle(.notchBlue)
                     }
-                    if let meeting = model.selectedEvents.first(where: { $0.end > Date() && $0.meetingURL != nil }), let url = meeting.meetingURL {
-                        HStack {
-                            Label(meeting.title, systemImage: "video").lineLimit(1)
-                            Spacer()
-                            Link("회의 참가", destination: url).help(url.host ?? "회의 열기")
-                        }
-                    }
                     if model.selectedEvents.isEmpty {
                         Text("선택한 날짜에 예정된 일정이 없습니다.").font(.subheadline).foregroundStyle(.secondary).padding(.vertical, 4)
                     } else {
@@ -128,7 +135,14 @@ struct CalendarView: View {
                                 VStack(alignment: .leading, spacing: 3) {
                                     Text(event.title).font(.headline)
                                     if event.isAllDay { Text("하루 종일").foregroundStyle(.secondary) }
-                                    else { Text(event.start, format: .dateTime.hour().minute()).foregroundStyle(.secondary) }
+                                    else {
+                                        let sameDay = Calendar.current.isDate(event.start, inSameDayAs: event.end)
+                                        Text("\(event.start.formatted(date: sameDay ? .omitted : .abbreviated, time: .shortened)) – \(event.end.formatted(date: sameDay ? .omitted : .abbreviated, time: .shortened))")
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    if let url = event.meetingURL {
+                                        Link("회의 참가", destination: url).font(.caption).help(url.host ?? "회의 열기")
+                                    }
                                 }
                                 Spacer()
                             }.fixedSize(horizontal: false, vertical: true).padding(.vertical, 2)
