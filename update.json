@@ -1,7 +1,7 @@
 {
-  "version": "0.3.11",
-  "build": 24,
-  "dmgURL": "https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.11.dmg",
-  "sha256": "acded3294a99ce15bcfbab4987300cbe2e6a5551e5999727bb11b5809826c302",
-  "releaseNotes": "음악 상태 조회 때 재생 버튼이 깜박이던 문제를 수정했습니다. 조회 중 누른 명령과 재생 위치 이동도 안정적으로 반영합니다."
+  "version": "0.3.12",
+  "build": 25,
+  "dmgURL": "https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.12.dmg",
+  "sha256": "8ce0678276251148d16ab028978e0a23ea56ae33a48c79d9a60d806ab3e92bc8",
+  "releaseNotes": "마우스를 올릴 때 노치가 부드럽게 펼쳐지는 효과를 복원했습니다. 중복 탭 갱신으로 애니메이션이 생략되는 문제를 수정하고, 펼치는 도중 크기가 바뀌어도 자연스럽게 이어지도록 개선했습니다."
 }

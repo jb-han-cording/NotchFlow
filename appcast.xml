@@ -8,6 +8,27 @@
     <description>NotchFlow release updates</description>
     <language>ko</language>
     <item>
+      <title>NotchFlow 0.3.12 (build 25)</title>
+      <sparkle:version>25</sparkle:version>
+      <sparkle:shortVersionString>0.3.12</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:minimumUpdateVersion>19</sparkle:minimumUpdateVersion>
+      <description><![CDATA[
+        <h2>이번 업데이트</h2>
+        <ul>
+          <li>마우스를 올릴 때 노치가 부드럽게 펼쳐지는 효과를 복원했습니다.</li>
+          <li>중복 탭 갱신으로 애니메이션이 생략되는 문제를 수정하고, 펼치는 도중 크기가 바뀌어도 자연스럽게 이어지도록 개선했습니다.</li>
+        </ul>
+      ]]></description>
+      <pubDate>Sun, 25 Oct 2026 13:43:00 +0000</pubDate>
+      <link>https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.12.dmg</link>
+      <enclosure
+        url="https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.12.dmg"
+        sparkle:edSignature="fNYoW0xdBnrUemJKnk/SShjk2HxFMIBS5ftEt9GvdRAEr5nAg2AHmmkMMFfLlMp8OBNzq8VZunebvC6nVM+wDA=="
+        length="4431886"
+        type="application/octet-stream" />
+    </item>
+    <item>
       <title>NotchFlow 0.3.11 (build 24)</title>
       <sparkle:version>24</sparkle:version>
       <sparkle:shortVersionString>0.3.11</sparkle:shortVersionString>

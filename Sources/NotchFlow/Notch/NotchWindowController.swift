@@ -12,6 +12,19 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
     }
 }
 
+// Layout can be requested by multiple publishers in the same run-loop turn.
+// The first request to observe a state transition must animate it, even when
+// that request originated from a non-animated settings/module refresh.
+struct NotchResizePolicy {
+    private var previousState: NotchState?
+
+    mutating func shouldAnimate(state: NotchState, requested: Bool, inFlight: Bool) -> Bool {
+        let changed = previousState.map { $0 != state } ?? false
+        previousState = state
+        return requested || changed || inFlight
+    }
+}
+
 @MainActor final class NotchWindowController: NSObject, NSWindowDelegate {
     private var panel: NotchPanel
     private let screens: ScreenService
@@ -34,6 +47,7 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
     private var suppressHoverUntilMouseExit = false
     private var lastLoggedState: NotchState?
     private var resizeDisplayLink: CADisplayLink?
+    private var resizePolicy = NotchResizePolicy()
     private var hiddenForApp = false
     private var resizeStartFrame: CGRect = .zero
     private var resizeStartedAt: CFTimeInterval = 0
@@ -123,7 +137,7 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
                 if hoverStartedAt == nil { hoverStartedAt = now }
                 if now - (hoverStartedAt ?? now) >= settings.value.hoverDelay {
                     hoverStartedAt = nil
-                    if model.musicPlaying, app.isEnabled(.music) {
+                    if model.musicPlaying, app.isEnabled(.music), app.selectedModule != .music {
                         app.selectedModule = .music
                     }
                     model.send(.hover)
@@ -197,7 +211,7 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
                 self.layout(animated: true)
             }
         }.store(in: &cancellables)
-        app.$selectedModule.sink { [weak self] mod in
+        app.$selectedModule.removeDuplicates().sink { [weak self] mod in
             guard let self else { return }
             let changed = self.module != mod
             self.module = mod
@@ -251,6 +265,9 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
             size = CGSize(width: expandedWidth, height: min(max(geometry.cutout.height, 24) + 190, availableHeight))
         }
         let target = geometry.frame(width: size.width, height: size.height)
+        let shouldAnimate = resizePolicy.shouldAnimate(
+            state: model.state, requested: animated, inFlight: resizeDisplayLink != nil
+        )
         // Unrelated updates must not restart a transition already heading here.
         if (model.state == .hover || model.state == .expanded || model.state == .dragActive), !model.presentsExpandedContent {
             model.presentsExpandedContent = true
@@ -264,7 +281,7 @@ final class FirstMouseHostingView<Content: View>: NSHostingView<Content> {
         let reduceMotion = NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
 
         if !isFrameApproximatelyEqual(panel.frame, target) {
-            if animated && !reduceMotion && panel.isVisible {
+            if shouldAnimate && !reduceMotion && panel.isVisible {
                 resizeDuration = max(0.1, speed)
                 transitionEndsAt = ProcessInfo.processInfo.systemUptime + resizeDuration
                 resizeStartFrame = panel.frame

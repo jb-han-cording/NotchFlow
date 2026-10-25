@@ -5,7 +5,7 @@
   <p>Keep music, events, files, notes, and focus timers naturally within reach.</p>
   <p><strong>macOS 14 or later · Apple silicon and Intel Macs</strong></p>
   <p>
-    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.11.dmg"><strong>Download NotchFlow 0.3.11</strong></a>
+    <a href="https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.12.dmg"><strong>Download NotchFlow 0.3.12</strong></a>
   </p>
   <p><a href="README.en.md">English</a> · <a href="README.md">한국어</a></p>
 </div>
@@ -25,14 +25,14 @@ NotchFlow also works on Macs without a physical notch and on external displays, 
 
 ## Install
 
-### New in 0.3.11
+### New in 0.3.12
 
-- **Music flicker fix** — Background polling no longer disables playback controls or republishes unchanged status.
-- **Reliable playback commands** — Commands issued during polling are retained, and seeking in the player updates the displayed progress.
+- **Hover animation restored** — Duplicate tab updates no longer skip the smooth expansion animation.
+- **Stable resizing** — Changes to content height during expansion continue animating. The macOS Reduce Motion setting remains respected.
 
 ### Download and launch
 
-1. [Download the NotchFlow DMG](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.11.dmg).
+1. [Download the NotchFlow DMG](https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.12.dmg).
 2. Open the DMG and drag **NotchFlow** to **Applications**.
 3. Launch NotchFlow from Applications.
 4. If macOS says it cannot verify the developer, Control-click the app, choose **Open**, and confirm.
@@ -97,4 +97,4 @@ For help or feature requests, visit [GitHub Issues](https://github.com/jb-han-co
 
 ---
 
-Current version: **0.3.11 (build 24)**
+Current version: **0.3.12 (build 25)**
