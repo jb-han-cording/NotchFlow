@@ -8,6 +8,27 @@
     <description>NotchFlow release updates</description>
     <language>ko</language>
     <item>
+      <title>NotchFlow 0.3.11 (build 24)</title>
+      <sparkle:version>24</sparkle:version>
+      <sparkle:shortVersionString>0.3.11</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:minimumUpdateVersion>19</sparkle:minimumUpdateVersion>
+      <description><![CDATA[
+        <h2>이번 업데이트</h2>
+        <ul>
+          <li>음악 상태 조회 때 재생 버튼이 주기적으로 깜박이던 문제를 수정했습니다.</li>
+          <li>조회 중 누른 재생 명령을 처리하고, 재생 위치 이동을 진행률에 반영합니다.</li>
+        </ul>
+      ]]></description>
+      <pubDate>Sun, 25 Oct 2026 13:35:00 +0000</pubDate>
+      <link>https://github.com/jb-han-cording/NotchFlow/raw/refs/heads/main/dist/NotchFlow-0.3.11.dmg</link>
+      <enclosure
+        url="https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.11.dmg"
+        sparkle:edSignature="8ydRr4P6Y6gIZ35Yd7poIZQFzQHKnMEV1s1uxjvaZSUqktfV/gpezeqI/6c45IVRSb8uOWPGmBaVvnxYukuUAw=="
+        length="4432434"
+        type="application/octet-stream" />
+    </item>
+    <item>
       <title>NotchFlow 0.3.10 (build 23)</title>
       <sparkle:version>23</sparkle:version>
       <sparkle:shortVersionString>0.3.10</sparkle:shortVersionString>

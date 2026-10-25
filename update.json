@@ -1,7 +1,7 @@
 {
-  "version": "0.3.10",
-  "build": 23,
-  "dmgURL": "https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.10.dmg",
-  "sha256": "0a75e65099e65fc2a51702564ed4d078d5849643bfff65789067504fb1756721",
-  "releaseNotes": "선택 날짜의 실제 일정 목록 높이에 맞춰 캘린더가 자동으로 늘어나고 줄어듭니다. 화면 높이나 최대 확장 크기를 넘는 일정은 스크롤로 볼 수 있습니다."
+  "version": "0.3.11",
+  "build": 24,
+  "dmgURL": "https://raw.githubusercontent.com/jb-han-cording/NotchFlow/main/dist/NotchFlow-0.3.11.dmg",
+  "sha256": "acded3294a99ce15bcfbab4987300cbe2e6a5551e5999727bb11b5809826c302",
+  "releaseNotes": "음악 상태 조회 때 재생 버튼이 깜박이던 문제를 수정했습니다. 조회 중 누른 명령과 재생 위치 이동도 안정적으로 반영합니다."
 }

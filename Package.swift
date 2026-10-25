@@ -8,5 +8,6 @@ let package = Package(name: "NotchFlow", platforms: [.macOS(.v14)], products: [
 ], targets: [
     .target(name: "NotchFlowCore"),
     .executableTarget(name: "NotchFlow", dependencies: ["NotchFlowCore", .product(name: "Sparkle", package: "Sparkle")]),
-    .testTarget(name: "NotchFlowCoreTests", dependencies: ["NotchFlowCore"])
+    .testTarget(name: "NotchFlowCoreTests", dependencies: ["NotchFlowCore"]),
+    .testTarget(name: "NotchFlowAppTests", dependencies: ["NotchFlow"])
 ])

@@ -12,6 +12,8 @@ import Combine
     private var observer: NSObjectProtocol?
     private var pollTimer: Timer?
     private var generation = 0
+    private var fetching = false
+    private var pendingCommand: MusicCommand?
     private var retriedArtworkTrackID: String?
     init(service: MusicProviding = MusicService()) { self.service = service }
     func connect() {
@@ -34,7 +36,7 @@ import Combine
         if let observer { DistributedNotificationCenter.default().removeObserver(observer) }
         pollTimer?.invalidate()
         pollTimer = nil
-        observer = nil; connected = false; busy = false; track = nil; lastTrack = nil; retriedArtworkTrackID = nil
+        observer = nil; connected = false; busy = false; fetching = false; pendingCommand = nil; track = nil; lastTrack = nil; retriedArtworkTrackID = nil
     }
     func openPlayer() {
         guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: provider.bundleID) else {
@@ -53,13 +55,31 @@ import Combine
         }
     }
     func refresh(command: MusicCommand? = nil, includeArtwork: Bool = true) {
-        guard connected, !busy else { return }
-        busy = true
+        guard connected else { return }
+        if fetching {
+            // Keep controls enabled during polling, and retain a user action
+            // that arrives while that read is in flight.
+            if let command, !busy {
+                pendingCommand = command
+                busy = true
+            }
+            return
+        }
+        fetching = true
+        if command != nil || track == nil { busy = true }
         let request = generation
         service.fetch(provider, command: command, includeArtwork: includeArtwork) { [weak self] result in
             Task { @MainActor in
                 guard let self, request == self.generation else { return }
-                self.busy = false
+                self.fetching = false
+                defer {
+                    if let pending = self.pendingCommand {
+                        self.pendingCommand = nil
+                        self.refresh(command: pending)
+                    } else if self.busy {
+                        self.busy = false
+                    }
+                }
                 switch result {
                 case .success(var next):
                     let previous = self.track?.id
@@ -72,15 +92,17 @@ import Combine
                        !includeArtwork,
                        next.id == current.id,
                        next.isPlaying == current.isPlaying,
+                       next.duration == current.duration,
+                       abs(next.position - current.progress(at: next.receivedAt)) < 2,
                        Date().timeIntervalSince(current.receivedAt) < 15 {
                         // TimelineView advances progress locally. Avoid
                         // republishing the same track on every background poll.
-                        self.status = "\(self.provider.rawValue) 연결됨"
+                        self.setStatus("\(self.provider.rawValue) 연결됨")
                         return
                     }
                     if let next { self.lastTrack = next }
                     self.track = next
-                    self.status = next == nil ? "재생 중인 음악이 없습니다." : "\(self.provider.rawValue) 연결됨"
+                    self.setStatus(next == nil ? "재생 중인 음악이 없습니다." : "\(self.provider.rawValue) 연결됨")
                     if let next, next.id != previous {
                         self.onTrackChanged?(next)
                         if next.artwork == nil && self.retriedArtworkTrackID != next.id {
@@ -92,9 +114,12 @@ import Combine
                             }
                         }
                     }
-                case .failure(let error): self.track = nil; self.status = error.localizedDescription
+                case .failure(let error): self.track = nil; self.setStatus(error.localizedDescription)
                 }
             }
         }
+    }
+    private func setStatus(_ value: String) {
+        if status != value { status = value }
     }
 }
